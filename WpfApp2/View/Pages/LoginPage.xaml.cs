@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -14,6 +15,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WpfApp2.Model;
+using Newtonsoft;
+using Newtonsoft.Json;
 
 namespace WpfApp2.View.Pages
 {
@@ -57,7 +61,7 @@ namespace WpfApp2.View.Pages
 
             if (DateTime.Now.Hour >= 5 && DateTime.Now.Hour <= 12)
             {
-                Greeting.Text = "Доброй утро";
+                Greeting.Text = "Доброе утро";
             }
         }
 
@@ -90,9 +94,11 @@ namespace WpfApp2.View.Pages
             Dialog.IsOpen = false;
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1()
         {
-            var findUser = App.db.User.ToList().Find(q=>q.Login == LoginBox.Text && q.Password == Password.Text);
+            var response = await App.httpClient.GetStringAsync("users");
+            var findUser = JsonConvert.DeserializeObject<List<Users>>(response).FirstOrDefault(q=>q.Login == LoginBox.Text && q.Password == Password.Text);
+            
             if(findUser != null)
             {
                 Username.Text =  $"Здравствуйте, {findUser.Name}";
@@ -101,15 +107,15 @@ namespace WpfApp2.View.Pages
                 dispatcherTimerDialog.Interval = TimeSpan.FromMilliseconds(850);
                 dispatcherTimerDialog.Start();
 
-                switch(findUser.RoleID)
-                {
-                    case 1:
+                //switch(findUser.RoleID)
+                //{
+                //    case 1:
 
-                        break;
-                    case 2:
+                //        break;
+                //    case 2:
 
-                        break;
-                }
+                //        break;
+                //}
             }
         }
 
@@ -127,6 +133,11 @@ namespace WpfApp2.View.Pages
         private void Success_Click(object sender, RoutedEventArgs e)
         {
             DialogSuccess.IsOpen = false;
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Button_Click_1();
         }
     }
 }

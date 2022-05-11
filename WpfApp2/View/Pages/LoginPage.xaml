@@ -164,7 +164,7 @@
                         Background="#3d54fc"
                         BorderThickness="0"
                         materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                        Click="Button_Click_1"/>
+                        Click="Button_Click_2"/>
                 <Button Background="Transparent"
                         Content="Зарегистрироваться"
                         Foreground="#3d54fc"

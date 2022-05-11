@@ -96,7 +96,7 @@
                     <Button x:Name="Cancel"
                             Content="Нет"
                             Margin="0,20"
-                            Click="Cancel_Click"
+                            Click="Cancel_Click_1"
                             Background="#3d54fc"/>
                 </StackPanel>
 

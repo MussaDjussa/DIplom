@@ -14,7 +14,7 @@ namespace WpfApp2.Model
     using System.Data.Entity.Infrastructure;
     
     public partial class CompClubDBEntities : DbContext
-    {
+    {   
         public CompClubDBEntities()
             : base("name=CompClubDBEntities")
         {

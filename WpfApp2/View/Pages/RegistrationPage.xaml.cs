@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WpfApp2.Model;
 
 namespace WpfApp2.View.Pages
 {
@@ -30,6 +33,12 @@ namespace WpfApp2.View.Pages
             dispatcherTimer.Tick += DispatcherTimer_Tick;
             dispatcherTimer.Interval = TimeSpan.FromMilliseconds(1);
             dispatcherTimer.Start();
+        }
+
+        public async void GetUsers()
+        {
+            var response = await App.httpClient.GetStringAsync("users");
+            var users = JsonConvert.DeserializeObject<List<User>>(response);
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -67,7 +76,7 @@ namespace WpfApp2.View.Pages
             Dialog.IsOpen = false;
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(NameBox.Text) || string.IsNullOrWhiteSpace(LoginBox.Text)
                 || string.IsNullOrEmpty(Password.Text))
@@ -76,35 +85,36 @@ namespace WpfApp2.View.Pages
             }
             else
             {
-                if(LoginBox.Text == Password.Text)
+                if (LoginBox.Text == Password.Text)
                 {
                     DialogDifferent.IsOpen = true;
                 }
                 else
                 {
-                    if(LoginBox.Text.Length < 2 || Password.Text.Length < 2)
+                    if (LoginBox.Text.Length < 2 || Password.Text.Length < 2)
                     {
                         DialogLength.IsOpen = true;
                     }
                     else
                     {
-                        var findUser = App.db.User.ToList().Find(q => q.Login == LoginBox.Text);
-                        if (findUser == null)
+
+                        Users users = new Users()
                         {
-                            App.db.User.Add(new Model.User
-                            {
-                                Name = NameBox.Text,
-                                Password = Password.Text,
-                                Login = LoginBox.Text,
-                                RoleID = 2,
-                                isActive = true
-                            });
-                            App.db.SaveChanges();
-                            DialogSuccess.IsOpen = true;
+                            Name = NameBox.Text,
+                            Login = LoginBox.Text,
+                            Password = Password.Text,
+                        };
+
+
+                        var result = App.httpClient.PostAsJsonAsync("users", users).Result;
+
+                        if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                        {
+                            DialogError.IsOpen = true;
                         }
                         else
                         {
-                            DialogError.IsOpen = true;
+                            DialogSuccess.IsOpen = true;
                         }
                     }
 
@@ -161,6 +171,11 @@ namespace WpfApp2.View.Pages
         private void MinLength_Click(object sender, RoutedEventArgs e)
         {
             DialogLength.IsOpen = false;
+        }
+
+        private void Cancel_Click_1(object sender, RoutedEventArgs e)
+        {
+            DialogSuccess.IsOpen = false;
         }
     }
 }
