@@ -12,25 +12,20 @@ namespace WpfApp2.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Users
+    public partial class Rate
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Users()
+        public Rate()
         {
-            this.Booking = new HashSet<Booking>();
             this.FormCheck = new HashSet<FormCheck>();
         }
     
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public int RoleId { get; set; }
+        public int PlayTime { get; set; }
+        public double Price { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Booking> Booking { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FormCheck> FormCheck { get; set; }
-        public virtual Roles Roles { get; set; }
     }
 }

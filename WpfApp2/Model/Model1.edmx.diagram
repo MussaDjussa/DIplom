@@ -4,11 +4,40 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="41a80b12e2f8401c8a5367734c3042fe" Name="Diagram1">
-        <EntityTypeShape EntityType="CompClubDBModel.Role" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CompClubDBModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CompClubDBModel.User" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="CompClubDBModel.FK_User_Role" ManuallyRouted="false" />
+      <Diagram DiagramId="a4df52f21b06424297f45e64eefdc98e" Name="Diagram1">
+        <EntityTypeShape EntityType="CompClubDBModel.C__EFMigrationsHistory" Width="1.5" PointX="7.75" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.AddRate" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.AddRate_CatAddRate" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.Booking" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.Category" Width="1.5" PointX="0.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.CategoryAddRate" Width="1.5" PointX="5.25" PointY="15.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.CategoryComputer" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.Computer" Width="1.5" PointX="0.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.FormCheck" Width="1.5" PointX="7.5" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.Game" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.GameComputer" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.Rate" Width="1.5" PointX="5.25" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.Roles" Width="1.5" PointX="0.75" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.sysdiagrams" Width="1.5" PointX="9.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.TypeDiscount" Width="1.5" PointX="5.25" PointY="17.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.TypePay" Width="1.5" PointX="5.25" PointY="12.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CompClubDBModel.Users" Width="1.5" PointX="3" PointY="12.5" IsExpanded="true" />
+        <AssociationConnector Association="CompClubDBModel.FK_AddRate_CatAddRate_AddRate_AddRateId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_FormCheck_AddRate_AddRateId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_AddRate_CatAddRate_CategoryAddRate_CategoryAddRateId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_AddRate_CatAddRate_TypeDiscount_TypeDiscountId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_Booking_CategoryComputer_CategoryComputerId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_Booking_Users_UsersId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_FormCheck_Booking_BookingId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_CategoryComputer_Category_CategoryId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_CategoryComputer_Computer_ComputerId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_FormCheck_CategoryComputer_CategoryComputerId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_GameComputer_Computer_ComputerId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_FormCheck_Rate_RateId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_FormCheck_TypePay_TypaPayId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_FormCheck_Users_UsersID" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_GameComputer_Game_GameId" ManuallyRouted="false" />
+        <AssociationConnector Association="CompClubDBModel.FK_Users_Roles_RoleId" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

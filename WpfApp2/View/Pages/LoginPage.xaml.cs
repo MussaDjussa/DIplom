@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using WpfApp2.Model;
 using Newtonsoft;
 using Newtonsoft.Json;
+using WpfApp2.View.Windows;
 
 namespace WpfApp2.View.Pages
 {
@@ -107,15 +108,15 @@ namespace WpfApp2.View.Pages
                 dispatcherTimerDialog.Interval = TimeSpan.FromMilliseconds(850);
                 dispatcherTimerDialog.Start();
 
-                //switch(findUser.RoleID)
-                //{
-                //    case 1:
+                switch (findUser.RoleId)
+                {
+                    case 1:
 
-                //        break;
-                //    case 2:
-
-                //        break;
-                //}
+                        break;
+                    case 2:
+                         StartWindow.GetWindow(this).Close();
+                        break;
+                }
             }
         }
 

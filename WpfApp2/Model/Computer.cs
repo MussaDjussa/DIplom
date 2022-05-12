@@ -12,25 +12,28 @@ namespace WpfApp2.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Users
+    public partial class Computer
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Users()
+        public Computer()
         {
-            this.Booking = new HashSet<Booking>();
-            this.FormCheck = new HashSet<FormCheck>();
+            this.CategoryComputer = new HashSet<CategoryComputer>();
+            this.GameComputer = new HashSet<GameComputer>();
         }
     
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public int RoleId { get; set; }
+        public int Id { get; set; }
+        public int NumberComp { get; set; }
+        public string Processor { get; set; }
+        public string VideoCard { get; set; }
+        public string Mouse { get; set; }
+        public string Keyborad { get; set; }
+        public string Headphones { get; set; }
+        public string Monitor { get; set; }
+        public string PhotoPath { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Booking> Booking { get; set; }
+        public virtual ICollection<CategoryComputer> CategoryComputer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FormCheck> FormCheck { get; set; }
-        public virtual Roles Roles { get; set; }
+        public virtual ICollection<GameComputer> GameComputer { get; set; }
     }
 }

@@ -23,5 +23,112 @@ namespace WpfApp2.View.Windows
         {
             InitializeComponent();
         }
+
+        private void btnHome_Click(object sender, RoutedEventArgs e)
+        {
+            HomeIcon.Foreground = new SolidColorBrush(Colors.Red);
+        }
+
+        private void btnHome_LostFocus(object sender, RoutedEventArgs e)
+        {
+            HomeIcon.Foreground = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void Contact_Click(object sender, RoutedEventArgs e)
+        {
+            ContactIcon.Foreground = new SolidColorBrush(Colors.Red);
+        }
+
+        private void Contact_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ContactIcon.Foreground = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void FeedBack_Click(object sender, RoutedEventArgs e)
+        {
+            FeedBackIcon.Foreground = new SolidColorBrush(Colors.Red);
+        }
+
+        private void FeedBack_LostFocus(object sender, RoutedEventArgs e)
+        {
+            FeedBackIcon.Foreground= new SolidColorBrush(Colors.Gray);
+        }
+
+        private void Computer_Click(object sender, RoutedEventArgs e)
+        {
+            ComputerIcon.Foreground = new SolidColorBrush(Colors.Red);
+        }
+
+        private void Computer_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ComputerIcon.Foreground = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void Card_Click(object sender, RoutedEventArgs e)
+        {
+            CardIcon.Foreground = new SolidColorBrush(Colors.Red);
+        }
+
+        private void Card_LostFocus(object sender, RoutedEventArgs e)
+        {
+            CardIcon.Foreground= new SolidColorBrush(Colors.Gray);
+        }
+
+        private void Clock_Click(object sender, RoutedEventArgs e)
+        {
+            ClockIcon.Foreground  = new SolidColorBrush(Colors.Red);
+        }
+
+        private void Clock_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ClockIcon.Foreground= new SolidColorBrush(Colors.Gray);
+        }
+
+        private void Food_Click(object sender, RoutedEventArgs e)
+        {
+            FoodIcon.Foreground = new SolidColorBrush (Colors.Red);    
+        }
+
+        private void Food_LostFocus(object sender, RoutedEventArgs e)
+        {
+            FoodIcon.Foreground = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void Book_Click(object sender, RoutedEventArgs e)
+        {
+            BookIcon.Foreground = new SolidColorBrush (Colors.Red);
+        }
+
+        private void Book_LostFocus(object sender, RoutedEventArgs e)
+        {
+            BookIcon.Foreground= new SolidColorBrush (Colors.Gray);
+        }
+
+        private void Map_Click(object sender, RoutedEventArgs e)
+        {
+            MapIcon.Foreground = new SolidColorBrush(Colors.Red);
+        }
+
+        private void Map_LostFocus(object sender, RoutedEventArgs e)
+        {
+            MapIcon.Foreground = new SolidColorBrush(Colors.Gray);
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void ExitAccount_Click(object sender, RoutedEventArgs e)
+        {
+
+            new StartWindow().Show();
+            this.Close();
+        }
+
+        private void Hide_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
     }
 }

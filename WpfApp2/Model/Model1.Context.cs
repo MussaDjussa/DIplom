@@ -14,7 +14,7 @@ namespace WpfApp2.Model
     using System.Data.Entity.Infrastructure;
     
     public partial class CompClubDBEntities : DbContext
-    {   
+    {
         public CompClubDBEntities()
             : base("name=CompClubDBEntities")
         {
@@ -25,8 +25,22 @@ namespace WpfApp2.Model
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<C__EFMigrationsHistory> C__EFMigrationsHistory { get; set; }
+        public virtual DbSet<AddRate> AddRate { get; set; }
+        public virtual DbSet<AddRate_CatAddRate> AddRate_CatAddRate { get; set; }
+        public virtual DbSet<Booking> Booking { get; set; }
+        public virtual DbSet<Category> Category { get; set; }
+        public virtual DbSet<CategoryAddRate> CategoryAddRate { get; set; }
+        public virtual DbSet<CategoryComputer> CategoryComputer { get; set; }
+        public virtual DbSet<Computer> Computer { get; set; }
+        public virtual DbSet<FormCheck> FormCheck { get; set; }
+        public virtual DbSet<Game> Game { get; set; }
+        public virtual DbSet<GameComputer> GameComputer { get; set; }
+        public virtual DbSet<Rate> Rate { get; set; }
+        public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
-        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<TypeDiscount> TypeDiscount { get; set; }
+        public virtual DbSet<TypePay> TypePay { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
     }
 }

@@ -12,18 +12,18 @@ namespace WpfApp2.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Role
+    public partial class Game
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Role()
+        public Game()
         {
-            this.User = new HashSet<User>();
+            this.GameComputer = new HashSet<GameComputer>();
         }
     
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> User { get; set; }
+        public virtual ICollection<GameComputer> GameComputer { get; set; }
     }
 }

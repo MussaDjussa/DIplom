@@ -12,15 +12,9 @@ namespace WpfApp2.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class C__EFMigrationsHistory
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public Nullable<int> RoleID { get; set; }
-        public Nullable<bool> isActive { get; set; }
-    
-        public virtual Role Role { get; set; }
+        public string MigrationId { get; set; }
+        public string ProductVersion { get; set; }
     }
 }

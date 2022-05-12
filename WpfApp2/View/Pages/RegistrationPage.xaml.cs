@@ -38,7 +38,7 @@ namespace WpfApp2.View.Pages
         public async void GetUsers()
         {
             var response = await App.httpClient.GetStringAsync("users");
-            var users = JsonConvert.DeserializeObject<List<User>>(response);
+            var users = JsonConvert.DeserializeObject<List<Users>>(response);
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -76,7 +76,7 @@ namespace WpfApp2.View.Pages
             Dialog.IsOpen = false;
         }
 
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(NameBox.Text) || string.IsNullOrWhiteSpace(LoginBox.Text)
                 || string.IsNullOrEmpty(Password.Text))
@@ -103,6 +103,8 @@ namespace WpfApp2.View.Pages
                             Name = NameBox.Text,
                             Login = LoginBox.Text,
                             Password = Password.Text,
+                            RoleId = 2,
+
                         };
 
 
