@@ -139,22 +139,7 @@
 
                             </StackPanel>
                         </Button>
-                        <Button x:Name="Computer" Style="{DynamicResource PopupButtonStyle}" Click="Computer_Click"  LostFocus="Computer_LostFocus">
 
-                            <StackPanel Orientation="Horizontal">
-
-                                <materialDesign:PackIcon Kind="Computer" Foreground="Gray"
-                                                         Width="30"
-                                                         Height="30"
-                                                         Margin="15,0,0,0"
-                                                         VerticalAlignment="Center"
-                                                         x:Name="ComputerIcon"/>
-
-                                <ctls:MenuItem Margin="-25,0,0,0" GroupName="MenuItem" IndicatorBrush="{DynamicResource PrimaryBlueColor}"  Text="Наши компьютеры" VerticalAlignment="Center"/>
-
-                            </StackPanel>
-
-                        </Button>
                         <Button x:Name="FeedBack" Style="{DynamicResource PopupButtonStyle}" Click="FeedBack_Click" LostFocus="FeedBack_LostFocus" >
 
                             <StackPanel Orientation="Horizontal">
@@ -328,9 +313,6 @@
                 </Frame>
 
             </Grid>
-
-
-
         </Grid>
     </Border>
 </Window>

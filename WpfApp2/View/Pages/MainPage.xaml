@@ -1,0 +1,29 @@
+﻿<Page x:Class="WpfApp2.View.Pages.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp2.View.Pages"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d" 
+      d:DesignHeight="900" d:DesignWidth="1500"
+      Title="MainPage">
+
+    <Grid>
+
+        <ScrollViewer>
+            <StackPanel>
+            <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Main1.png"/>
+
+            <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Main2.png"
+                   Margin="0,20,0,0"/>
+
+                <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Main3.png"
+                   Margin="0,20,0,0"/>
+                <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Main4.png"
+                       Margin="0,20,0,0"/>
+            </StackPanel>
+        </ScrollViewer>
+        
+    </Grid>
+</Page>

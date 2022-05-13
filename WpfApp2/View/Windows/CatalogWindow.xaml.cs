@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp2.View.Pages;
 
 namespace WpfApp2.View.Windows
 {
@@ -22,6 +23,7 @@ namespace WpfApp2.View.Windows
         public CatalogWindow()
         {
             InitializeComponent();
+            fContainer.Content = new MainPage();
         }
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
@@ -52,16 +54,6 @@ namespace WpfApp2.View.Windows
         private void FeedBack_LostFocus(object sender, RoutedEventArgs e)
         {
             FeedBackIcon.Foreground= new SolidColorBrush(Colors.Gray);
-        }
-
-        private void Computer_Click(object sender, RoutedEventArgs e)
-        {
-            ComputerIcon.Foreground = new SolidColorBrush(Colors.Red);
-        }
-
-        private void Computer_LostFocus(object sender, RoutedEventArgs e)
-        {
-            ComputerIcon.Foreground = new SolidColorBrush(Colors.Gray);
         }
 
         private void Card_Click(object sender, RoutedEventArgs e)
