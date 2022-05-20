@@ -38,7 +38,7 @@ namespace WpfApp2.View.Pages
         public async void GetUsers()
         {
             var response = await App.httpClient.GetStringAsync("users");
-            var users = JsonConvert.DeserializeObject<List<Users>>(response);
+            var users = JsonConvert.DeserializeObject<List<User>>(response);
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -98,7 +98,7 @@ namespace WpfApp2.View.Pages
                     else
                     {
 
-                        Users users = new Users()
+                        User users = new User()
                         {
                             Name = NameBox.Text,
                             Login = LoginBox.Text,
@@ -108,7 +108,7 @@ namespace WpfApp2.View.Pages
                         };
 
 
-                        var result = App.httpClient.PostAsJsonAsync("users", users).Result;
+                            var result = App.httpClient.PostAsJsonAsync("users", users).Result;
 
                         if (result.StatusCode == System.Net.HttpStatusCode.BadRequest)
                         {

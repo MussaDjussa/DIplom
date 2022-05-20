@@ -4,11 +4,340 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp2.View.Pages"
+      xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:system="clr-namespace:System;assembly=mscorlib"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:viewmodel="clr-namespace:WpfApp2.ViewModel"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="Booking">
+      >
+    <Page.DataContext>
+        <viewmodel:ScheduleViewModel/>
+    </Page.DataContext>
 
-    <Grid>
+    
+
+    <Page.Resources>
+
+        <Style TargetType="syncfusion:DayViewControl">
+            <Setter Property="Background" Value="LightCyan"/>
+            <Setter Property="Foreground" Value="Red"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderBrush" Value="DarkBlue"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style TargetType="syncfusion:DayViewHeader">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontFamily" Value="Roboto"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+
+        <!--<Style TargetType="syncfusion:">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="FontFamily" Value="Roboto"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>-->
+
+        <DataTemplate x:Key="viewHeaderTemplate">
+            <StackPanel   
+        Width="2000"
+        VerticalAlignment="Stretch" 
+        HorizontalAlignment="Stretch"
+        Orientation="Vertical">
+                <TextBlock 
+                    Margin="80,20,20,10"
+        HorizontalAlignment="Left" 
         
+        Foreground="Black"
+        Text="{Binding DateText}"
+        FontSize="25"
+        TextTrimming="CharacterEllipsis"
+        TextWrapping="Wrap" />
+                <TextBlock 
+        HorizontalAlignment="Left"  Margin="20,0,0,0" 
+        Foreground="Black"
+        FontFamily="Arial"
+        Text="{Binding DayText}"
+        FontSize="18"
+        TextTrimming="CharacterEllipsis"
+        TextWrapping="Wrap" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="Transparent">
+        
+
+        <Border>
+            <Grid>
+
+
+
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Border Background="{DynamicResource PrimaryBackgroundColor}"
+                    Width="500"
+                    HorizontalAlignment="Left"
+                    CornerRadius="7"
+                    Margin="0,0,0,10">
+                    <StackPanel Margin="10"
+                        HorizontalAlignment="Center">
+                        <TextBlock Text="Отобразить по"
+                           FontSize="16"
+                           FontWeight="Medium"
+                           Margin="0,0,10,10"
+                           
+                           HorizontalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Width="120"
+                            Content="День"
+                            x:Name="Day"
+                            Click="Day_Click"/>
+                            <Button Width="120"
+                        Margin="10,0,0,0"
+                            Content="Неделя"
+                            x:Name="Week"
+                            Click="Week_Click"/>
+                            <Button Width="120"
+                        Margin="10,0,0,0"
+                            Content="Месяц"
+                            x:Name="Month"
+                            Click="Month_Click"/>
+
+                        </StackPanel>
+                    </StackPanel>
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0"
+                                      Opacity="0.1" />
+                    </Border.Effect>
+                </Border>
+
+                <syncfusion:SfScheduler x:Name="Schedule"
+                                    ViewType="Week"
+                                    Grid.Row="1"
+                                    ItemsSource="{Binding Meetings}"
+                                    >
+
+
+
+                    <syncfusion:SfScheduler.DaysViewSettings >
+
+                        <syncfusion:DaysViewSettings TimeRulerSize="120" 
+                                                 MinimumAllDayAppointmentsCount="5"
+                                                 TimeRulerFormat="hh mm"
+                                                 TimeInterval="30"
+                                                 ViewHeaderDateFormat="dd"
+                                                 ViewHeaderDayFormat="dddd"
+                                                 ViewHeaderHeight="100"
+                                                 >
+
+
+
+                            <syncfusion:DaysViewSettings.AllDayMoreAppointmentsIndicatorTemplate>
+                                <DataTemplate >
+                                    <TextBlock Text="{Binding StringFormat=+{0}}" Background="LightBlue" Foreground="Black"
+                               HorizontalAlignment="Stretch" TextAlignment="Left" VerticalAlignment="Stretch" Padding="2,3,0,0">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </syncfusion:DaysViewSettings.AllDayMoreAppointmentsIndicatorTemplate>
+                        </syncfusion:DaysViewSettings>
+
+
+
+                    </syncfusion:SfScheduler.DaysViewSettings>
+
+                    <syncfusion:SfScheduler.AppointmentMapping>
+                        <syncfusion:AppointmentMapping
+                StartTime="From"
+                EndTime="To"
+                Subject="EventName"
+                AppointmentBackground="Color"
+                IsAllDay="AllDay" 
+                >
+                        </syncfusion:AppointmentMapping>
+                    </syncfusion:SfScheduler.AppointmentMapping>
+
+                    <syncfusion:SfScheduler.MonthViewSettings>
+                        <syncfusion:MonthViewSettings ShowAgendaView="True"/>
+                    </syncfusion:SfScheduler.MonthViewSettings>
+                </syncfusion:SfScheduler>
+
+            </Grid>
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" ShadowDepth="0"
+              Opacity="0.15"/>
+            </Border.Effect>
+        </Border>
+        <materialDesign:DialogHost x:Name="DialogEditor">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel  Height="550" Width="800">
+                    <materialDesign:Card>
+                        <TextBlock Text="Контекстное меню"
+                                   Margin="20"
+                                   FontWeight="Medium"
+                                   FontSize="20"/>
+                    </materialDesign:Card>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel>
+                            <StackPanel Margin="20" Orientation="Horizontal">
+                                <TextBlock Text="Имя клиента:"
+                                       FontSize="18"
+                                       Margin="0,10,0,0"/>
+                                <TextBox Height="40"
+                                     MaxLength="16"
+                                     materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                                     materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                                     materialDesign:TextFieldAssist.HasClearButton="True"
+                                     materialDesign:TextFieldAssist.HasFilledTextField="True"
+                                     materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                                     materialDesign:HintAssist.Hint="Имя клиента"
+                                     FontSize="18"
+                                     x:Name="Username"
+                                     Margin="10,0,0,0"/>
+                            </StackPanel>
+                            <TextBlock Text="Старт"
+                                       Margin="20,0,0,0"
+                                       FontSize="18"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="20,20,0,0">
+                                <DatePicker Width="150"
+                                            FontSize="16"
+                                            x:Name="DatePickerStart"/>
+                                <materialDesign:TimePicker
+                                            Width="150"
+                                            FontSize="16"
+                                            Margin="20,0,0,0"
+                                            x:Name="TimePickerStart"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Выбрать цвет:"
+                                       Margin="20,20,0,0"
+                                       FontSize="18"
+                                       />
+
+                            <syncfusion:ColorPicker x:Name="DialogEditorColorpicker"
+                                                    Width="300"
+                                                        HorizontalAlignment="Left"
+                                                        Margin="10,0,0,0"/>
+                          
+
+
+                            <TextBlock Text="Описание:"
+                                       Margin="20,10,0,0"
+                                       FontSize="18"
+                                       />
+                            <TextBox Height="100"
+                                     materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                                     materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                                     materialDesign:TextFieldAssist.HasClearButton="True"
+                                     materialDesign:TextFieldAssist.HasFilledTextField="True"
+                                     materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                                     materialDesign:HintAssist.Hint="Описание к брони"
+                                     FontSize="18"
+                                     x:Name="Description"
+                                     Margin="20,20,0,0"
+                                     TextWrapping="Wrap"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1"
+                                    Margin="0,80">
+                            <TextBlock Text="Конец"
+                                       Margin="20,0,0,0"
+                                       FontSize="18"/>
+
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="20,20,0,0">
+                                <syncfusion:SfDatePicker Width="150"
+                                            FontSize="16"
+                                            x:Name="DatePickerEnd"/>
+                                <!--<DatePicker Width="150"
+                                            FontSize="16"
+                                            x:Name="DatePickerEnd"/>-->
+                                <materialDesign:TimePicker
+                                            Width="150"
+                                            FontSize="16"
+                                            Margin="20,0,0,0"
+                                            x:Name="TimePickerEnd"
+                                            SelectedTimeFormat="Long">
+                                    
+                                </materialDesign:TimePicker>
+                            </StackPanel>
+
+                            <CheckBox Margin="20"
+                                      FontSize="14"
+                                      Content="На весь день"
+                                      VerticalContentAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Checked="DialogEditorCheckbox_Checked"
+                                      Unchecked="DialogEditorCheckbox_Unchecked"
+                                      x:Name="DialogEditorCheckbox"
+                                      >
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="1.24" ScaleY="1.25" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.ColumnSpan="2"
+                          Margin="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Right">
+                            <Button Width="120"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Content="Изменить"
+                                Foreground="#fc9c3b"
+                                FontWeight="Normal"
+                                FontSize="16"
+                                x:Name="DialogEditEditButton"
+                                Click="DialogEditEditButton_Click"
+                                Visibility="Visible"/>
+                            
+                            <Button Width="120"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Content="Сохранить"
+                                Foreground="#3d54fc"
+                                FontWeight="Normal"
+                                FontSize="16"
+                                x:Name="DialogEditSaveButton"
+                                Click="DialogEditSaveButton_Click"
+                                Visibility="Visible"/>
+
+                            <Button Width="120"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Content="Отмена"
+                                Foreground="Gray"
+                                FontWeight="Normal"
+                                FontSize="16"
+                                x:Name="DialogEditorCancelButton"
+                                Click="DialogEditorCancelButton_Click"/>
+                        </StackPanel>
+
+                    </Grid>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
     </Grid>
 </Page>

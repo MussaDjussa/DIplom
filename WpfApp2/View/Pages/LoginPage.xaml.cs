@@ -29,6 +29,7 @@ namespace WpfApp2.View.Pages
     {
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
         DispatcherTimer dispatcherTimerDialog = new DispatcherTimer();
+        DispatcherTimer dispatcherForWindow = new DispatcherTimer();
 
         public LoginPage()
         {
@@ -98,15 +99,19 @@ namespace WpfApp2.View.Pages
         private async void Button_Click_1()
         {
             var response = await App.httpClient.GetStringAsync("users");
-            var findUser = JsonConvert.DeserializeObject<List<Users>>(response).FirstOrDefault(q=>q.Login == LoginBox.Text && q.Password == Password.Text);
+            var findUser = JsonConvert.DeserializeObject<List<User>>(response).FirstOrDefault(q=>q.Login == LoginBox.Text && q.Password == Password.Text);
             
             if(findUser != null)
             {
                 Username.Text =  $"Здравствуйте, {findUser.Name}";
                 DialogSuccess.IsOpen = true;
                 dispatcherTimerDialog.Tick += DispatcherTimerDialog_Tick;
-                dispatcherTimerDialog.Interval = TimeSpan.FromMilliseconds(850);
+                dispatcherTimerDialog.Interval = TimeSpan.FromSeconds(850);
                 dispatcherTimerDialog.Start();
+
+                App.users.Name = findUser.Name;
+                App.users.Id = findUser.Id;
+               
 
                 switch (findUser.RoleId)
                 {
@@ -114,15 +119,26 @@ namespace WpfApp2.View.Pages
 
                         break;
                     case 2:
-                         StartWindow.GetWindow(this).Close();
+                        dispatcherForWindow.Tick += DispatcherForWindow_Tick;
+                        dispatcherForWindow.Interval = TimeSpan.FromSeconds(1);
+                        dispatcherForWindow.Start();
                         break;
                 }
             }
         }
 
+        private void DispatcherForWindow_Tick(object sender, EventArgs e)
+        {
+            new CatalogWindow().Show();
+            dispatcherForWindow.Stop();
+            StartWindow.GetWindow(this).Close();
+        }
+
         private void DispatcherTimerDialog_Tick(object sender, EventArgs e)
         {
+            
             DialogSuccess.IsOpen = false;
+            
             dispatcherTimerDialog.Stop();
         }
 

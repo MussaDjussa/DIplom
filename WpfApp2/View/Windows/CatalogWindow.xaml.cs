@@ -89,6 +89,7 @@ namespace WpfApp2.View.Windows
         private void Book_Click(object sender, RoutedEventArgs e)
         {
             BookIcon.Foreground = new SolidColorBrush (Colors.Red);
+            fContainer.Content = new Booking();
         }
 
         private void Book_LostFocus(object sender, RoutedEventArgs e)
@@ -122,5 +123,6 @@ namespace WpfApp2.View.Windows
         {
             this.WindowState = WindowState.Minimized;
         }
+
     }
 }

@@ -74,20 +74,18 @@
 
         <materialDesign:DialogHost x:Name="DialogSuccess">
             <materialDesign:DialogHost.DialogContent>
-                <StackPanel Margin="20" >
+                <StackPanel Margin="20" Width="300">
                     <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Success.png"
                            Width="250"
                            Height="250"/>
-                    <TextBlock Text="Пользователь зарегистрирован!"
+                    <TextBlock Text="Пользователь зарегистрирован, перейти к авторизации?"
                            HorizontalAlignment="Center"
                            FontSize="18"
                            FontWeight="Medium"
-                           Margin="0,20,0,0"/>
-                    <TextBlock Text="Перейти к авторизации?"
-                           HorizontalAlignment="Center"
-                           FontSize="18"
-                           FontWeight="Medium"
-                           Margin="10"/>
+                           Margin="0,20,0,0"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"/>
+                    
                     <Button x:Name="Success"
                             Content="Давайте"
                             Margin="0,20,0,0"
@@ -97,7 +95,9 @@
                             Content="Нет"
                             Margin="0,20"
                             Click="Cancel_Click_1"
-                            Background="#3d54fc"/>
+                            Background="Transparent"
+                            Foreground="#3d54fc"
+                            BorderThickness="0"/>
                 </StackPanel>
 
             </materialDesign:DialogHost.DialogContent>
@@ -115,7 +115,7 @@
                            FontSize="18"
                            FontWeight="Medium"
                            TextWrapping="Wrap"
-                           Margin="20"
+                           Margin="20,40,20,20"
                            TextAlignment="Center"/>
                     <Button x:Name="DialogErrorButton"
                             Content="Понятно"

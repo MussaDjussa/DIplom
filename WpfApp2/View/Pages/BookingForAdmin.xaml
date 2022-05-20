@@ -1,0 +1,182 @@
+﻿<Page x:Class="WpfApp2.View.Pages.BookingForAdmin"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WpfApp2.View.Pages"
+      xmlns:syncfusion="http://schemas.syncfusion.com/wpf" xmlns:system="clr-namespace:System;assembly=mscorlib"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d"
+      Height="800"
+      Width="1500">
+
+    <Grid Background="Transparent">
+        <materialDesign:DialogHost x:Name="StartEndConfig">
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="20" >
+                    <TextBox Height="40"
+                         MaxLength="2"
+                         materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                         materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:TextFieldAssist.HasFilledTextField="True"
+                         materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                         materialDesign:HintAssist.Hint="Старт"
+                         FontSize="18"
+                         x:Name="StartTime"
+                         TextChanged="StartTime_TextChanged"/>
+                    <TextBox Height="40"
+                         MaxLength="2"
+                         materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                         materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                         materialDesign:TextFieldAssist.HasClearButton="True"
+                         materialDesign:TextFieldAssist.HasFilledTextField="True"
+                         materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                         materialDesign:HintAssist.Hint="Конец"
+                         FontSize="18"
+                         Margin="0,32,0,0"
+                         x:Name="EndTime"
+                         TextChanged="EndTime_TextChanged"/>
+
+                    <Button Height="40"
+                            Width="120"
+                            Margin="0,32,0,0"
+                            Content="Задать"
+                            x:Name="ConfigureTime"
+                            Click="ConfigureTime_Click"/>
+
+                    <Button Background="Transparent"
+                        Content="Назад"
+                        Foreground="#3d54fc"
+                        BorderBrush="Transparent"
+                        Margin="0,16"
+                        FontSize="16"
+                        x:Name="Back"
+                        FontWeight="Regular"
+                        Click="Back_Click"/>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+    
+    <Border>
+        
+        
+        <Grid>
+
+
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            
+
+            <StackPanel Orientation="Horizontal"
+                        >
+                
+
+                <Border Background="{DynamicResource PrimaryBackgroundColor}"
+                    Width="500"
+                    HorizontalAlignment="Left"
+                    CornerRadius="7"
+                    Margin="0,0,0,10">
+                <StackPanel Margin="10"
+                        HorizontalAlignment="Center">
+                    <TextBlock Text="Отобразить по"
+                           FontSize="16"
+                           FontWeight="Medium"
+                           Margin="0,0,10,10"
+                           
+                           HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Width="120"
+                            Content="День"
+                            x:Name="Day"
+                            Click="Day_Click"/>
+                        <Button Width="120"
+                        Margin="10,0,0,0"
+                            Content="Неделя"
+                            x:Name="Week"
+                            Click="Week_Click"/>
+                        <Button Width="120"
+                        Margin="10,0,0,0"
+                            Content="Месяц"
+                            x:Name="Month"
+                            Click="Month_Click"/>
+
+                    </StackPanel>
+                </StackPanel>
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="0"
+                                      Opacity="0.1" />
+                </Border.Effect>
+            </Border>
+
+                <Border  Margin="10,0,0,10"
+                         Background="{DynamicResource PrimaryBackgroundColor}"
+                    Width="500"
+                    CornerRadius="7"
+                         >
+
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Настроить" 
+                                   FontSize="16"
+                                   Margin="0,0,0,10"
+                           FontWeight="Medium"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Width="220"
+                                    Content="Начало\Конец"
+                                    ToolTip="Настроить время начала бронирования и конец бронирования" Click="TimeConfigure_Click"
+                                    x:Name="TimeConfigure"/>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0"
+                                      Opacity="0.1" />
+                    </Border.Effect>
+                </Border>
+
+            </StackPanel>
+            
+            
+            
+
+            <syncfusion:SfScheduler x:Name="Schedule"
+                                    ViewType="Week"
+                                    Grid.Row="1"
+                                    AppointmentEditorClosing="Schedule_AppointmentEditorClosing"
+                                     ItemsSource="{Binding Events}">
+
+                <syncfusion:SfScheduler.DaysViewSettings>
+                    <syncfusion:DaysViewSettings 
+            TimeIntervalSize="120"/>
+                </syncfusion:SfScheduler.DaysViewSettings>
+
+                <syncfusion:SfScheduler.AppointmentMapping>
+                    <syncfusion:AppointmentMapping
+    Subject="EventName"
+    StartTime="From"
+    EndTime="To"
+    AppointmentBackground="Color"
+    IsAllDay="IsAllDay"
+    StartTimeZone="StartTimeZone"
+    EndTimeZone="EndTimeZone"/>
+                </syncfusion:SfScheduler.AppointmentMapping>
+
+                <syncfusion:SfScheduler.MonthViewSettings>
+                    <syncfusion:MonthViewSettings ShowAgendaView="True"/>
+                </syncfusion:SfScheduler.MonthViewSettings>
+            </syncfusion:SfScheduler>
+
+        </Grid>
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="30" ShadowDepth="0"
+              Opacity="0.15"/>
+        </Border.Effect>
+    </Border>
+    </Grid>
+</Page>
