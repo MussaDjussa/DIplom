@@ -39,58 +39,124 @@ namespace WpfApp2.View.Pages
             time.Interval = TimeSpan.FromSeconds(5);
             time.Tick += Time_Tick;
             Schedule.MinimumDate = DateTime.Now;
+            Schedule.DisplayDate = DateTime.Now;
             Schedule.ResourceCollection = Resources;
             Schedule.MaximumDate = DateTime.Now.AddDays(30);
             Schedule.AppointmentEditorOpening += Schedule_AppointmentEditorOpening;
+            Schedule.CellLongPressed += Schedule_CellLongPressed;
+            Schedule.CellTapped += Schedule_CellTapped;
             Schedule.AppointmentTapped += Schedule_AppointmentTapped;
-            DatePickerStart.DisplayDateStart = DateTime.Now;
             //DatePickerEnd.DisplayDateEnd = DateTime.Now.AddDays(30);
-
             TimePickerStart.Is24Hours = true;
-            TimePickerEnd.Is24Hours= true;
-            
+            TimePickerEnd.Is24Hours = true;
+
             this.Schedule.ItemsSource = list;
 
             Schedule.CellDoubleTapped += Schedule_CellDoubleTapped;
         }
 
-        public ScheduleAppointment tempAppointment { get; set; } = new ScheduleAppointment();
+        public int DayTimeBegin { get; set; }
+
+        public int MonthTimeBegin { get; set; }
+
+        public int HourTimeBegin { get; set; }
+
+        public int MinuteTimeBegin { get; set; }
+
+        public string TimeCollapseBegin { get; set; }
+
+        public int DayTimeEnd { get; set; }
+
+        public int MonthTimeEnd { get; set; }
+
+        public int HourTimeEnd { get; set; }
+
+        public int MinuteTimeEnd {get;set;}
+
+        public string TimeCollapseEnd { get; set; }
 
         private void Schedule_AppointmentTapped(object sender, AppointmentTappedArgs e)
         {
-          
+            if(e.Appointment != null)
+            {
+                TempAppointment.StartTime = e.Appointment.StartTime;
+                TempAppointment.EndTime = e.Appointment.EndTime;
+                TempAppointment.Subject = e.Appointment.Subject;
+                TempAppointment.Notes = e.Appointment.Notes;
+                TempAppointment.AppointmentBackground = e.Appointment.AppointmentBackground;
+
+                StartTimeDatePicker = e.Appointment.StartTime.Day.ToString();
+                EndTimeDatePicker = e.Appointment.EndTime.Day.ToString();
+
+                StartTimeTimePicker = e.Appointment.StartTime.TimeOfDay.ToString();
+                EndTimeTimePicker = e.Appointment.EndTime.TimeOfDay.ToString();
+            }
+        }
+
+        public DateTime CellTaped { get; set; }
+
+        public DateTime StartTime { get; set; }
+
+        public DateTime EndTime { get; set; }
+
+        private void Schedule_CellTapped(object sender, CellTappedEventArgs e)
+        {
+            //StartTimeDatePicker = e.DateTime;
+            //EndTimeDatePicker = e.DateTime.Hour;
+            CellTaped = e.DateTime;
+
+            if (e.Appointments != null)
+            {
+                TempAppointment = e.Appointment;
+            }
+        }
+
+        private void Schedule_CellLongPressed(object sender, CellLongPressedEventArgs e)
+        {
+            
+
+            DatePickerStart.IsEnabled = false;
+            DatePickerEnd.IsEnabled = false;
             if (e.Appointment != null)
             {
                 var patternAppointment = RecurrenceHelper.GetPatternAppointment(this.Schedule, e.Appointment);
-                tempAppointment = patternAppointment;
+                TempAppointment = patternAppointment;
                 DialogEditor.IsOpen = true;
-
-                DatePickerStart.SelectedDate = patternAppointment.StartTime;
-                //DatePickerEnd.SelectedDate = patternAppointment.EndTime;
+                DatePickerStart.Value = patternAppointment.StartTime;
+                DatePickerEnd.Value = patternAppointment.EndTime;
                 Username.Text = patternAppointment.Subject;
                 Description.Text = patternAppointment.Notes;
             }
         }
 
-        public ScheduleAppointment OccureAppointment { get; set; } = new ScheduleAppointment();
-        public Appointment SelectedAppointment { get; set; } = new Appointment();
+        public ScheduleAppointment TempAppointment { get; set; } = new ScheduleAppointment();
+
+
+      
 
         private void Schedule_CellDoubleTapped(object sender, CellDoubleTappedEventArgs e)
         {
+            DayTimeBegin = CellTaped.Day;
+            HourTimeBegin = CellTaped.Hour;
+            MonthTimeBegin = CellTaped.Month;
+            MinuteTimeBegin = CellTaped.Minute;
 
+            DialogEditEditButton.Visibility = Visibility.Collapsed;
+
+            TimeCollapseBegin = $"{DateTime.Now.Year}.{MonthTimeBegin}.{DayTimeBegin}.{HourTimeBegin}.{MinuteTimeBegin}";
+
+            DatePickerStart.IsEnabled = true;
+            DatePickerEnd.IsEnabled = true;
+            DialogEditSaveButton.Visibility = Visibility.Visible;
             Username.Text = "Musa"; // username
 
-            DatePickerStart.SelectedDate = e.DateTime;
-            
-            //DatePickerEnd.SelectedDate =e.DateTime.AddHours(1);
-            TimePickerEnd.SelectedTime = e.DateTime.AddHours(1);
+            DatePickerStart.Value = CellTaped;
+            DatePickerEnd.Value = CellTaped;
+            TimePickerStart.SelectedTime = CellTaped;
+            TimePickerEnd.SelectedTime = CellTaped.AddHours(1);
 
-            TimePickerStart.SelectedTime = e.DateTime;
-           
             DialogEditor.IsOpen = true;
 
-
-            SelectedAppointment.StartTime = e.DateTime;
         }
 
         private void Schedule_AppointmentEditorOpening(object sender, AppointmentEditorOpeningEventArgs e)
@@ -152,12 +218,14 @@ namespace WpfApp2.View.Pages
 
             list.Add(new ScheduleAppointment()
             {
-                StartTime = SelectedAppointment.StartTime,
-                EndTime = SelectedAppointment.StartTime.AddHours(1),
+                StartTime = CellTaped,
+                EndTime = CellTaped.AddHours(1),
                 Subject = "Musa", // username
                 Notes = Description.Text,
-                AppointmentBackground = new SolidColorBrush(DialogEditorColorpicker.Color)
-            });
+                AppointmentBackground = new SolidColorBrush(DialogEditorColorpicker.Color),
+                StartTimeZone = "Russian Standard Time",
+                EndTimeZone = "Russian Standard Time"
+            });;
        
             //var response = App.httpClient.PostAsJsonAsync("appointment", appointment).Result;
 
@@ -173,13 +241,106 @@ namespace WpfApp2.View.Pages
 
         private void DialogEditEditButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var item in list.Where(q=>q.Id == tempAppointment.Id))
+        
+            foreach (var item in list.Where(q=>q.Id == TempAppointment.Id))
             {
                 if(item != null)
                 {
-
+                    item.StartTime = DatePickerStart.Value ?? TempAppointment.StartTime;
+                    item.EndTime = DatePickerEnd.Value ?? TempAppointment.StartTime;
+                    item.AppointmentBackground = new SolidColorBrush(DialogEditorColorpicker.Color);
+                    item.Notes = Description.Text ?? TempAppointment.Notes;
+                    item.Subject = Username.Text ?? TempAppointment.Subject;
+                    DialogEditor.IsOpen=false;
                 }
             }
+        }
+
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+
+            DatePickerStart.IsEnabled = true;
+            DatePickerEnd.IsEnabled = true;
+
+            Username.Text = "Musa"; // username
+
+            DatePickerStart.Value = CellTaped;
+            DatePickerEnd.Value = CellTaped;
+            TimePickerStart.SelectedTime = CellTaped;
+            TimePickerEnd.SelectedTime = CellTaped;
+
+            DialogEditor.IsOpen = true;
+        }
+
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+            DialogEditEditButton.Visibility=Visibility.Visible;
+            DatePickerStart.IsEnabled = false;
+            DatePickerEnd.IsEnabled= false;
+            DialogEditor.IsOpen = true;
+            DialogEditSaveButton.Visibility = Visibility.Collapsed;
+            
+            
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            if(TempAppointment != null)
+            {
+                foreach (var item in list.Where(q => q.Id == TempAppointment.Id))
+                {
+                    if (item != null)
+                    {
+                        list.Remove(item);
+                    }
+                }
+            }
+            
+        }
+
+        public string StartTimeDatePicker { get; set; }
+        public string StartTimeTimePicker { get; set; }
+        public string EndTimeTimePicker { get; set; }
+        public string EndTimeDatePicker { get; set; }
+
+        private void DatePickerStart_ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var value = DatePickerStart.Value;
+            int valueDay = DateTime.Parse(DateTime.Now.AddDays(30).ToString()).Day;
+            int valueMonth = DateTime.Parse(DateTime.Now.AddDays(30).ToString()).Month;
+            if (DateTime.Parse(value.ToString()).Year < DateTime.Now.Year || DateTime.Parse(value.ToString()).Year > DateTime.Now.Year
+                || DateTime.Parse(value.ToString()).Day < DateTime.Now.Day || DateTime.Now.Month < DateTime.Parse($"{DatePickerStart.Value}").Month
+                || DateTime.Parse($"{DatePickerStart.Value}").Month < DateTime.Now.Month )
+            {
+                MessageBox.Show("Ошибка");
+                DatePickerStart.Value = CellTaped;
+            }
+            else
+            {
+                StartTimeDatePicker = DatePickerStart.Value.ToString();
+
+                DateTime day = DatePickerStart.Value ?? DateTime.Parse(TimeCollapseBegin);
+
+                DayTimeBegin = day.Day;
+                MonthTimeBegin = day.Month;
+                HourTimeBegin = day.Hour;
+                MinuteTimeBegin = day.Minute;
+            }
+        }
+
+        private void TimePickerStart_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
+        {
+            StartTimeTimePicker = TimePickerStart.SelectedTime.ToString();
+        }
+
+        private void DatePickerEnd_ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            EndTimeDatePicker = DatePickerEnd.Value.ToString();
+        }
+
+        private void TimePickerEnd_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
+        {
+             EndTimeTimePicker = TimePickerEnd.SelectedTime.ToString();
         }
     }
 }

@@ -13,7 +13,7 @@
         <viewmodel:ScheduleViewModel/>
     </Page.DataContext>
 
-    
+
 
     <Page.Resources>
 
@@ -68,14 +68,10 @@
     </Page.Resources>
 
     <Grid Background="Transparent">
-        
+
 
         <Border>
             <Grid>
-
-
-
-
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
                     <RowDefinition/>
@@ -122,9 +118,26 @@
                                     ViewType="Week"
                                     Grid.Row="1"
                                     ItemsSource="{Binding Meetings}"
-                                    >
+                                    TimeZone="Russian Standard Time">
 
-
+                    <syncfusion:SfScheduler.AppointmentContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="{Binding Source={x:Static Member=syncfusion:SchedulerCommands.Edit}}"
+                                      CommandParameter ="{Binding}"
+                                      CommandTarget="{Binding ElementName=Schedule}"
+                                      Header="Редактировать"
+                                      x:Name="Edit"
+                                      Click="Edit_Click">
+                            </MenuItem>
+                            <MenuItem
+                                Command="{Binding Source={x:Static Member=syncfusion:SchedulerCommands.Delete}}"
+                                CommandParameter ="{Binding}"
+                                Header="Удалить"
+                                x:Name="Delete"
+                                Click="Delete_Click">
+                            </MenuItem>
+                        </ContextMenu>
+                    </syncfusion:SfScheduler.AppointmentContextMenu>
 
                     <syncfusion:SfScheduler.DaysViewSettings >
 
@@ -132,17 +145,20 @@
                                                  MinimumAllDayAppointmentsCount="5"
                                                  TimeRulerFormat="hh mm"
                                                  TimeInterval="30"
-                                                 ViewHeaderDateFormat="dd"
-                                                 ViewHeaderDayFormat="dddd"
-                                                 ViewHeaderHeight="100"
+                                                 ViewHeaderHeight="80"
                                                  >
 
 
 
                             <syncfusion:DaysViewSettings.AllDayMoreAppointmentsIndicatorTemplate>
                                 <DataTemplate >
-                                    <TextBlock Text="{Binding StringFormat=+{0}}" Background="LightBlue" Foreground="Black"
-                               HorizontalAlignment="Stretch" TextAlignment="Left" VerticalAlignment="Stretch" Padding="2,3,0,0">
+                                    <TextBlock Text="{Binding StringFormat=+{0}}"
+                                               Background="LightBlue" 
+                                               Foreground="Black"
+                                               HorizontalAlignment="Stretch" 
+                                               TextAlignment="Left" 
+                                               VerticalAlignment="Stretch"
+                                               Padding="2,3,0,0">
                                     </TextBlock>
                                 </DataTemplate>
                             </syncfusion:DaysViewSettings.AllDayMoreAppointmentsIndicatorTemplate>
@@ -154,12 +170,12 @@
 
                     <syncfusion:SfScheduler.AppointmentMapping>
                         <syncfusion:AppointmentMapping
-                StartTime="From"
-                EndTime="To"
-                Subject="EventName"
-                AppointmentBackground="Color"
-                IsAllDay="AllDay" 
-                >
+                                    StartTime="From"
+                                    EndTime="To"
+                                    Subject="EventName"
+                                    AppointmentBackground="Color"
+                                    IsAllDay="AllDay" 
+                                    >
                         </syncfusion:AppointmentMapping>
                     </syncfusion:SfScheduler.AppointmentMapping>
 
@@ -212,14 +228,16 @@
 
                             <StackPanel Orientation="Horizontal"
                                         Margin="20,20,0,0">
-                                <DatePicker Width="150"
+                                <syncfusion:SfDatePicker Width="150"
                                             FontSize="16"
-                                            x:Name="DatePickerStart"/>
+                                            x:Name="DatePickerStart"
+                                            ValueChanged="DatePickerStart_ValueChanged"/>
                                 <materialDesign:TimePicker
                                             Width="150"
                                             FontSize="16"
                                             Margin="20,0,0,0"
-                                            x:Name="TimePickerStart"/>
+                                            x:Name="TimePickerStart"
+                                            SelectedTimeChanged="TimePickerStart_SelectedTimeChanged"/>
                             </StackPanel>
 
                             <TextBlock Text="Выбрать цвет:"
@@ -229,9 +247,9 @@
 
                             <syncfusion:ColorPicker x:Name="DialogEditorColorpicker"
                                                     Width="300"
-                                                        HorizontalAlignment="Left"
-                                                        Margin="10,0,0,0"/>
-                          
+                                                    HorizontalAlignment="Left"
+                                                    Margin="10,0,0,0"/>
+
 
 
                             <TextBlock Text="Описание:"
@@ -261,18 +279,16 @@
                                         Margin="20,20,0,0">
                                 <syncfusion:SfDatePicker Width="150"
                                             FontSize="16"
-                                            x:Name="DatePickerEnd"/>
-                                <!--<DatePicker Width="150"
-                                            FontSize="16"
-                                            x:Name="DatePickerEnd"/>-->
+                                            x:Name="DatePickerEnd"
+                                            ValueChanged="DatePickerEnd_ValueChanged"/>
+
                                 <materialDesign:TimePicker
-                                            Width="150"
+                                            x:Name="TimePickerEnd"
+                                             Width="150"
                                             FontSize="16"
                                             Margin="20,0,0,0"
-                                            x:Name="TimePickerEnd"
-                                            SelectedTimeFormat="Long">
-                                    
-                                </materialDesign:TimePicker>
+                                            SelectedTimeChanged="TimePickerEnd_SelectedTimeChanged"/>
+
                             </StackPanel>
 
                             <CheckBox Margin="20"
@@ -312,7 +328,7 @@
                                 x:Name="DialogEditEditButton"
                                 Click="DialogEditEditButton_Click"
                                 Visibility="Visible"/>
-                            
+
                             <Button Width="120"
                                 Background="Transparent"
                                 BorderThickness="0"
