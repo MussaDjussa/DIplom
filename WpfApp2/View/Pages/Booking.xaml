@@ -248,7 +248,7 @@
                             <syncfusion:ColorPicker x:Name="DialogEditorColorpicker"
                                                     Width="300"
                                                     HorizontalAlignment="Left"
-                                                    Margin="10,0,0,0"/>
+                                                    Margin="20,0,0,0"/>
 
 
 
