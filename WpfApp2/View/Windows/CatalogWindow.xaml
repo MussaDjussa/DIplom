@@ -65,7 +65,8 @@
                                 <ctls:MenuItem GroupName="MenuItem" IndicatorBrush="Red"
                                                Text="Главная"
                                                VerticalAlignment="Center"
-                                               Margin="-25,0,0,0"/>
+                                               Margin="-25,0,0,0"
+                                               />
 
                             </StackPanel>
                         </Button>

@@ -5,10 +5,136 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp2.View.Pages"
       mc:Ignorable="d" 
+            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FeedbackPage">
 
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Margin="20">
+            <TextBlock Text="Фамилия и инициалы заявителя:"
+                       FontSize="18"
+                       FontWeight="Medium"/>
+            <TextBox Height="40"
+                                     materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                                     materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                                     materialDesign:TextFieldAssist.HasClearButton="True"
+                                     materialDesign:TextFieldAssist.HasFilledTextField="True"
+                                     materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                                     materialDesign:HintAssist.Hint="ФИО"
+                                     FontSize="18"
+                                     x:Name="FIO"
+                                     Margin="0,20,0,0"
+                                     TextWrapping="Wrap"
+                                     />
+            <TextBlock Text="Адрес заявителя:"
+                       FontSize="18"
+                       FontWeight="Medium"
+                       Margin="0,20,0,0"/>
+            <TextBox Height="40"
+                                     materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                                     materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                                     materialDesign:TextFieldAssist.HasClearButton="True"
+                                     materialDesign:TextFieldAssist.HasFilledTextField="True"
+                                     materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                                     materialDesign:HintAssist.Hint="Адрес"
+                                     FontSize="18"
+                                     x:Name="Adres"
+                                     Margin="0,20,0,0"
+                                     TextWrapping="Wrap"
+                                     />
+
+            <TextBlock Text="Меры, принятые по заявлению администрацией организации:"
+                       FontSize="18"
+                       FontWeight="Medium"
+                       Margin="0,20,0,0"/>
+            <TextBox Height="40"
+                                     materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                                     materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                                     materialDesign:TextFieldAssist.HasClearButton="True"
+                                     materialDesign:TextFieldAssist.HasFilledTextField="True"
+                                     materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                                     materialDesign:HintAssist.Hint="Опишите принятые меры"
+                                     FontSize="18"
+                                     x:Name="Fix"
+                                     Margin="0,20,0,0"
+                                     TextWrapping="Wrap"
+                                     />
+            <TextBlock Text="Дата и время:"
+                       FontSize="18"
+                       FontWeight="Medium"
+                       Margin="0,20,0,0"/>
+
+            <StackPanel Orientation="Horizontal">
+                <DatePicker Height="40" Width="120" FontSize="18"/>
+                <materialDesign:TimePicker Is24Hours="True" Margin="20,0,0,0"  Height="40" Width="120" FontSize="18"/>
+            </StackPanel>
+
+            <TextBlock Text="Тип отзыва:"
+                       FontSize="18"
+                       FontWeight="Medium"
+                       Margin="0,20,0,0"/>
+            <ComboBox FontSize="18">
+                <ComboBoxItem>
+                    Положительный
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    Негативный
+                </ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock Text="Подробное описание отзыва:"
+                       FontSize="18"
+                       FontWeight="Medium"
+                       Margin="0,20,0,0"/>
+
+            <TextBox Height="200"
+                                     materialDesign:TextFieldAssist.UnderlineBrush="#3d54fc"
+                                     materialDesign:TextFieldAssist.TextFieldCornerRadius="5"
+                                     materialDesign:TextFieldAssist.HasClearButton="True"
+                                     materialDesign:TextFieldAssist.HasFilledTextField="True"
+                                     materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
+                                     materialDesign:HintAssist.Hint="Опишите принятые меры"
+                                     FontSize="18"
+                                     x:Name="Description"
+                                     Margin="0,20,0,0"
+                                     TextWrapping="Wrap"
+                                     />
+
+            <TextBlock Text="Оцените нас:"
+                       FontSize="18"
+                       FontWeight="Medium"
+                       Margin="0,20,0,0"/>
+            <materialDesign:RatingBar
+  x:Name="BasicRatingBar"
+  Value="0"
+                />
+
+            <Button Content="Отправить"
+                    Margin="0,20"/>
+        </StackPanel>
+
+        <Grid Grid.Column="1" Margin="40,0,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Другие отзывы:"
+                       FontSize="18"
+                       FontWeight="Medium"
+                       Margin="0,20,0,0"/>
+
+            <TextBlock Text="Мои отзывы:"
+                       FontSize="18"
+                       FontWeight="Medium"
+                       Margin="0,20,0,0"
+                       Grid.Row="1"/>
+        </Grid>
     </Grid>
 </Page>

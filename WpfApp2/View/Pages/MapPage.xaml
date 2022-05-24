@@ -9,6 +9,6 @@
       Title="MapPage">
 
     <Grid>
-        
+        <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Group 2.jpg"/>
     </Grid>
 </Page>

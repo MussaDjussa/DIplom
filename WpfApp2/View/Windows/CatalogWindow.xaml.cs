@@ -20,14 +20,19 @@ namespace WpfApp2.View.Windows
     /// </summary>
     public partial class CatalogWindow : Window
     {
+        MainPage mainPage = new MainPage();
+        Booking booking = new Booking();
+        MapPage mapPage = new MapPage();
+        FeedbackPage feedbackPage = new FeedbackPage();
         public CatalogWindow()
         {
             InitializeComponent();
-            fContainer.Content = new MainPage();
+            fContainer.Content = mainPage;
         }
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
+            fContainer.NavigationService.Navigate(mainPage);
             HomeIcon.Foreground = new SolidColorBrush(Colors.Red);
         }
 
@@ -48,6 +53,7 @@ namespace WpfApp2.View.Windows
 
         private void FeedBack_Click(object sender, RoutedEventArgs e)
         {
+            fContainer.NavigationService.Navigate(feedbackPage);
             FeedBackIcon.Foreground = new SolidColorBrush(Colors.Red);
         }
 
@@ -89,7 +95,7 @@ namespace WpfApp2.View.Windows
         private void Book_Click(object sender, RoutedEventArgs e)
         {
             BookIcon.Foreground = new SolidColorBrush (Colors.Red);
-            fContainer.Content = new Booking();
+            fContainer.NavigationService.Navigate(booking);
         }
 
         private void Book_LostFocus(object sender, RoutedEventArgs e)
@@ -99,6 +105,7 @@ namespace WpfApp2.View.Windows
 
         private void Map_Click(object sender, RoutedEventArgs e)
         {
+            fContainer.NavigationService.Navigate(mapPage);
             MapIcon.Foreground = new SolidColorBrush(Colors.Red);
         }
 

@@ -26,10 +26,8 @@ namespace WpfApp2.View.Pages
     /// <summary>
     /// Логика взаимодействия для Booking.xaml
     /// </summary>
-    public partial class Booking : Page, INotifyPropertyChanged
+    public partial class Booking : Page
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         DispatcherTimer time = new DispatcherTimer();
 
         ScheduleAppointmentCollection list = new ScheduleAppointmentCollection();
@@ -84,6 +82,10 @@ namespace WpfApp2.View.Pages
                 StartTime = e.Appointment.StartTime;
                 EndTime = e.Appointment.EndTime;
 
+                Kakayatahyinya.Notes = e.Appointment.Notes;
+                Kakayatahyinya.Subject = e.Appointment.Subject;
+
+
                 DatePickerStart.Value = e.Appointment.StartTime;
                 DatePickerEnd.Value = e.Appointment.EndTime;
                 TimePickerEnd.SelectedTime = e.Appointment.EndTime;
@@ -103,8 +105,6 @@ namespace WpfApp2.View.Pages
 
         private void Schedule_CellTapped(object sender, CellTappedEventArgs e)
         {
-            //StartTimeDatePicker = e.DateTime;
-            //EndTimeDatePicker = e.DateTime.Hour;
             CellTaped = e.DateTime;
 
             if (e.Appointments != null)
@@ -151,10 +151,6 @@ namespace WpfApp2.View.Pages
         
         
 
-        public void OnPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
         private void Time_Tick(object sender, EventArgs e)
         {
             Schedule.MinimumDate = DateTime.Now;
@@ -209,8 +205,12 @@ namespace WpfApp2.View.Pages
                 AppointmentBackground = new SolidColorBrush(DialogEditorColorpicker.Color),
                 StartTimeZone = "Russian Standard Time",
                 EndTimeZone = "Russian Standard Time"
-            });;
-       
+            });
+
+
+            Description.Text = "";
+            Username.Text = "";
+
             //var response = App.httpClient.PostAsJsonAsync("appointment", appointment).Result;
 
             //if (response.StatusCode == System.Net.HttpStatusCode.OK)
@@ -238,22 +238,7 @@ namespace WpfApp2.View.Pages
                 }
             }
         }
-
-        private void Add_Click(object sender, RoutedEventArgs e)
-        {
-
-            DatePickerStart.IsEnabled = true;
-            DatePickerEnd.IsEnabled = true;
-
-            Username.Text = "Musa"; // username
-
-            DatePickerStart.Value = CellTaped;
-            DatePickerEnd.Value = CellTaped;
-            TimePickerStart.SelectedTime = CellTaped;
-            TimePickerEnd.SelectedTime = CellTaped;
-
-            DialogEditor.IsOpen = true;
-        }
+        
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
@@ -266,8 +251,9 @@ namespace WpfApp2.View.Pages
             if(TempAppointment != null )
             {
                 
-               DialogEditor.IsOpen = true;
-
+                DialogEditor.IsOpen = true;
+                Username.Text = Kakayatahyinya.Subject;
+                Description.Text = Kakayatahyinya.Notes;
             }
             
         }

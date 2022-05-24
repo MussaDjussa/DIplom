@@ -294,6 +294,13 @@
     <Resource Include="Resources\Main3.png" />
     <Resource Include="Resources\Main4.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Group 10.jpg" />
+    <Resource Include="Resources\Group 11.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Group 2.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.6.0-ci170\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.6.0-ci170\build\MaterialDesignThemes.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

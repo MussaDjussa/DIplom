@@ -12,16 +12,17 @@
     <Grid>
 
         <ScrollViewer>
-            <StackPanel>
-            <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Main1.png"/>
+            <StackPanel Margin="100">
+                <Border>
+                    <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Group 10.jpg"/>
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1" BlurRadius="5" Opacity="0.2" Color="#FF00E5"/>
+                    </Border.Effect>
+                </Border>
+                
 
-            <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Main2.png"
+                <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Group 11.jpg"
                    Margin="0,20,0,0"/>
-
-                <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Main3.png"
-                   Margin="0,20,0,0"/>
-                <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Main4.png"
-                       Margin="0,20,0,0"/>
             </StackPanel>
         </ScrollViewer>
         
