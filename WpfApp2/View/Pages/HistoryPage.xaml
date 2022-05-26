@@ -9,6 +9,40 @@
       Title="HistoryPage">
 
     <Grid>
-        
+        <StackPanel Margin="30">
+            <StackPanel Orientation="Horizontal" Opacity="0.8">
+
+                <Border BorderBrush="Red"
+                        BorderThickness="0.5"
+                        CornerRadius="5">
+                    <TextBlock Text="MussaDjussa"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Margin="10"/>
+                </Border>
+                
+                <TextBlock Text=" | "
+                           FontSize="32"
+                           FontWeight="Normal"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="Дата регистрации: " FontSize="28"
+                           FontWeight="Normal"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="26.05.2022"
+                           FontWeight="Normal"
+                           FontSize="28"
+                           VerticalAlignment="Center"
+                           Foreground="#3d54fc"/>
+            </StackPanel>
+
+            <ScrollViewer Height="800">
+                <TextBlock Text="Статистика"
+                       Margin="0,40,0,0"
+                       FontSize="24"
+                       TextDecorations="OverLine"
+                       Foreground="DarkGoldenrod"/>
+            </ScrollViewer>
+           
+        </StackPanel>
     </Grid>
 </Page>

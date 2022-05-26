@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp2.Model;
 
 namespace WpfApp2.View.Pages
 {
@@ -20,9 +21,18 @@ namespace WpfApp2.View.Pages
     /// </summary>
     public partial class FeedbackPage : Page
     {
+        List<FeedBackModel> list = new List<FeedBackModel>();
         public FeedbackPage()
         {
             InitializeComponent();
+
+            for (int i = 0; i < 30; i++)
+            {
+                list.Add(new FeedBackModel() { DatePost = DateTime.Now.ToLongDateString(),  Description = $"Description {i}" , Login = $"Login {i}"});
+            }
+
+            feedbackOther.ItemsSource = list;
+            feedbackOwn.ItemsSource = list;
         }
     }
 }

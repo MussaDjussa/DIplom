@@ -5,8 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp2.View.Pages"
       mc:Ignorable="d" 
-            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FeedbackPage">
 
@@ -99,7 +99,7 @@
                                      materialDesign:TextFieldAssist.HasClearButton="True"
                                      materialDesign:TextFieldAssist.HasFilledTextField="True"
                                      materialDesign:TextFieldAssist.UnderlineCornerRadius="5"
-                                     materialDesign:HintAssist.Hint="Опишите принятые меры"
+                                     materialDesign:HintAssist.Hint="Опишите подробнее свой отзыв"
                                      FontSize="18"
                                      x:Name="Description"
                                      Margin="0,20,0,0"
@@ -117,6 +117,12 @@
 
             <Button Content="Отправить"
                     Margin="0,20"/>
+
+            <Button Content="Проблема не была решена?"
+                    Foreground="#3d54fc"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    FontWeight="Regular"/>
         </StackPanel>
 
         <Grid Grid.Column="1" Margin="40,0,0,0">
@@ -125,16 +131,118 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Другие отзывы:"
-                       FontSize="18"
-                       FontWeight="Medium"
-                       Margin="0,20,0,0"/>
+            
 
-            <TextBlock Text="Мои отзывы:"
+            <StackPanel Margin="0,20,0,0">
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Другие отзывы:"
                        FontSize="18"
                        FontWeight="Medium"
-                       Margin="0,20,0,0"
-                       Grid.Row="1"/>
+                       />
+
+                    <Button Margin="100,0,0,0"
+                            Background="Transparent"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                            Foreground="Gray"
+                            Content="Негативные"/>
+
+                    <Button Margin="20,0,0,0"
+                            Background="Transparent"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                            Foreground="#3d54fc"
+                            Content="Позитивные"/>
+
+                    <Button Margin="20,0,0,0"
+                            Background="Transparent"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                            Foreground="DarkMagenta"
+                            Content="Все"/>
+
+                    <Button Margin="20,0,0,0"
+                            Background="Transparent"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                            Foreground="DarkOrange"
+                            Content="Поиск"/>
+                </StackPanel>
+                
+
+                <ListView x:Name="feedbackOther" Height="500">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Login}"/>
+                                        <TextBlock Text=" | "/>
+                                        <TextBlock Text="{Binding DatePost}"/>
+                                    </StackPanel>
+                                   
+                                    <materialDesign:RatingBar Value="3"/>
+                                    <TextBlock Text="{Binding Description}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+
+            <StackPanel Margin="0,20,0,0"
+                       Grid.Row="1">
+
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Мои отзывы:"
+                       FontSize="18"
+                       FontWeight="Medium"
+                       />
+
+                    <Button Margin="100,0,0,0"
+                            Background="Transparent"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                            Foreground="Gray"
+                            Content="Негативные"/>
+
+                    <Button Margin="20,0,0,0"
+                            Background="Transparent"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                            Foreground="#3d54fc"
+                            Content="Позитивные"/>
+
+                    <Button Margin="20,0,0,0"
+                            Background="Transparent"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                            Foreground="DarkMagenta"
+                            Content="Все"/>
+
+                    <Button Margin="20,0,0,0"
+                            Background="Transparent"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                            Foreground="DarkOrange"
+                            Content="Поиск"/>
+                </StackPanel>
+
+
+                <ListView x:Name="feedbackOwn" Height="500">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding Login}"/>
+                                        <TextBlock Text=" | "/>
+                                        <TextBlock Text="{Binding DatePost}"/>
+                                    </StackPanel>
+
+                                    <materialDesign:RatingBar Value="3"/>
+                                    <TextBlock Text="{Binding Description}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            
         </Grid>
     </Grid>
 </Page>

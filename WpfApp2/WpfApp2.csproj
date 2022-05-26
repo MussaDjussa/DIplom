@@ -110,6 +110,7 @@
     </Compile>
     <Compile Include="Model\Appointment.cs" />
     <Compile Include="Model\Computer.cs" />
+    <Compile Include="Model\FeedBackModel.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="ViewModel\Meeting.cs" />
     <Compile Include="ViewModel\ScheduleAppointmentConfiguration.cs" />

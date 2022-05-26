@@ -24,6 +24,7 @@ namespace WpfApp2.View.Windows
         Booking booking = new Booking();
         MapPage mapPage = new MapPage();
         FeedbackPage feedbackPage = new FeedbackPage();
+        HistoryPage historyPage = new HistoryPage();
         public CatalogWindow()
         {
             InitializeComponent();
@@ -74,6 +75,7 @@ namespace WpfApp2.View.Windows
 
         private void Clock_Click(object sender, RoutedEventArgs e)
         {
+            fContainer.NavigationService.Navigate(historyPage);
             ClockIcon.Foreground  = new SolidColorBrush(Colors.Red);
         }
 
