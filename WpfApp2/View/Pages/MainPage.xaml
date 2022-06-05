@@ -11,7 +11,7 @@
 
     <Grid>
 
-        <ScrollViewer>
+        <!--<ScrollViewer>
             <StackPanel Margin="100">
                 <Border>
                     <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Group 10.jpg"/>
@@ -24,7 +24,7 @@
                 <Image Source="C:\Users\mussa\source\repos\дипломчик\WpfApp2\Resources\Group 11.jpg"
                    Margin="0,20,0,0"/>
             </StackPanel>
-        </ScrollViewer>
+        </ScrollViewer>-->
         
     </Grid>
 </Page>

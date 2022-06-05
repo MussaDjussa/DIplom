@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp2.Model;
 
 namespace WpfApp2.View.Pages
 {
@@ -20,9 +21,19 @@ namespace WpfApp2.View.Pages
     /// </summary>
     public partial class HistoryPage : Page
     {
+        public List<ChartModel> list = new List<ChartModel>();
         public HistoryPage()
         {
             InitializeComponent();
+            list.Add(new ChartModel() { Name = "CSGO", Hours = 200 });
+            list.Add(new ChartModel() { Name = "DOTA", Hours = 2392 });
+            list.Add(new ChartModel() { Name = "Wot", Hours = 839 });
+            list.Add(new ChartModel() { Name = "Apex Legends", Hours = 124 });
+            list.Add(new ChartModel() { Name = "Crysis", Hours = 53 });
+            list.Add(new ChartModel() { Name = "GTA V", Hours = 1032 });
+            list.Add(new ChartModel() { Name = "Clash Royal", Hours = 420 });
+
+            ColumnSeries.ItemsSource = list;
         }
     }
 }

@@ -50,11 +50,14 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Licensing, Version=20.1460.0.55, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Syncfusion.Licensing.20.1.0.55\lib\net46\Syncfusion.Licensing.dll</HintPath>
+    <Reference Include="Syncfusion.Licensing, Version=20.1460.0.57, Culture=neutral, PublicKeyToken=632609b4d040f6b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.Licensing.20.1.0.57\lib\net46\Syncfusion.Licensing.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.SfBusyIndicator.WPF, Version=20.1460.0.55, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.SfBusyIndicator.WPF.20.1.0.55\lib\net46\Syncfusion.SfBusyIndicator.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.SfChart.WPF, Version=20.1460.0.57, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <HintPath>..\packages\Syncfusion.SfChart.WPF.20.1.0.57\lib\net46\Syncfusion.SfChart.WPF.dll</HintPath>
     </Reference>
     <Reference Include="Syncfusion.SfInput.WPF, Version=20.1460.0.55, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.SfInput.WPF.20.1.0.55\lib\net46\Syncfusion.SfInput.WPF.dll</HintPath>
@@ -109,14 +112,24 @@
       <DependentUpon>UserPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Appointment.cs" />
+    <Compile Include="Model\ChartModel.cs" />
     <Compile Include="Model\Computer.cs" />
     <Compile Include="Model\FeedBackModel.cs" />
     <Compile Include="Model\User.cs" />
-    <Compile Include="ViewModel\Meeting.cs" />
-    <Compile Include="ViewModel\ScheduleAppointmentConfiguration.cs" />
-    <Compile Include="ViewModel\SchedulerBehavior.cs" />
-    <Compile Include="ViewModel\ScheduleViewModel.cs" />
+    <Compile Include="ViewModel\BookingViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\Pages\AdditionFolder\ControllerPage.xaml.cs">
+      <DependentUpon>ControllerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\AdditionFolder\DrinkPage.xaml.cs">
+      <DependentUpon>DrinkPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\AdditionFolder\FoodPage.xaml.cs">
+      <DependentUpon>FoodPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\AdditionFolder\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Pages\AdditionsPage.xaml.cs">
       <DependentUpon>AdditionsPage.xaml</DependentUpon>
     </Compile>
@@ -126,8 +139,17 @@
     <Compile Include="View\Pages\BookingForAdmin.xaml.cs">
       <DependentUpon>BookingForAdmin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Pages\CardClubFolder\InformationCardClubPage.xaml.cs">
+      <DependentUpon>InformationCardClubPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\CardClubFolder\NullPage.xaml.cs">
+      <DependentUpon>NullPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Pages\ClientPapge.xaml.cs">
       <DependentUpon>ClientPapge.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\ClubCardPage.xaml.cs">
+      <DependentUpon>ClubCardPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Pages\ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
@@ -207,6 +229,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Pages\AdditionFolder\ControllerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\AdditionFolder\DrinkPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\AdditionFolder\FoodPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\AdditionFolder\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Pages\AdditionsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -219,7 +257,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\Pages\CardClubFolder\InformationCardClubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\CardClubFolder\NullPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Pages\ClientPapge.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\ClubCardPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -301,6 +351,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Group 2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\man-shrugging.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.6.0-ci170\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.6.0-ci170\build\MaterialDesignThemes.targets')" />

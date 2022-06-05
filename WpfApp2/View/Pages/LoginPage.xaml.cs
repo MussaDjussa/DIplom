@@ -119,6 +119,7 @@ namespace WpfApp2.View.Pages
 
                         break;
                     case 2:
+                        new CatalogWindow().Show();
                         dispatcherForWindow.Tick += DispatcherForWindow_Tick;
                         dispatcherForWindow.Interval = TimeSpan.FromSeconds(1);
                         dispatcherForWindow.Start();
@@ -129,7 +130,7 @@ namespace WpfApp2.View.Pages
 
         private void DispatcherForWindow_Tick(object sender, EventArgs e)
         {
-            new CatalogWindow().Show();
+            
             dispatcherForWindow.Stop();
             StartWindow.GetWindow(this).Close();
         }

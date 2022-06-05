@@ -6,9 +6,77 @@
       xmlns:local="clr-namespace:WpfApp2.View.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="AdditionsPage">
+      Title="AdditionsPage"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
     <Grid>
-        
+
+
+        <StackPanel
+  Orientation="Horizontal"
+  Margin="4"
+            Height="60"
+            VerticalAlignment="Top">
+            <materialDesign:PackIcon Kind="AccountPlus" 
+                                     Height="30"
+                                     Width="30"
+                                     VerticalAlignment="Center"
+                                     Opacity="0.5"
+                                     x:Name="AllIcon"/>
+            <RadioButton
+    Style="{StaticResource MaterialDesignTabRadioButtonTop}"
+    BorderBrush="DarkGreen"
+    Margin="4"
+    IsChecked="True"
+    Content="Все услуги" 
+    x:Name="All"
+                Checked="All_Checked"
+                LostFocus="All_LostFocus"/>
+            <materialDesign:PackIcon Kind="FoodAppleOutline"
+                                     Height="30"
+                                     Width="30"
+                                     VerticalAlignment="Center"
+                                     Opacity="0.5"
+                                     x:Name="FoodIcon"/>
+            <RadioButton
+    Style="{StaticResource MaterialDesignTabRadioButtonTop}"
+    BorderBrush="DarkRed"
+    Margin="4"
+    IsChecked="False"
+    Content="ЕДА" 
+    x:Name="Food"
+                Checked="Food_Checked"
+                LostFocus="Food_LostFocus"/>
+            <materialDesign:PackIcon Kind="DrinkOutline"
+                                     Height="30"
+                                     Width="30"
+                                     VerticalAlignment="Center"
+                                     Opacity="0.5"
+                                     x:Name="DrinkIcon"/>
+            <RadioButton
+    Style="{StaticResource MaterialDesignTabRadioButtonTop}"
+    BorderBrush="#3d54fc"
+    Margin="4"
+    IsChecked="False"
+    Content="НАПИТКИ" 
+    x:Name="Drinkables"
+                Checked="Drinkables_Checked"
+                LostFocus="Drinkables_LostFocus"/>
+            <materialDesign:PackIcon Kind="ControllerOutline"
+                                     Height="30"
+                                     Width="30"
+                                     VerticalAlignment="Center"
+                                     Opacity="0.5"
+                                     x:Name="ControllerIcon"/>
+            <RadioButton
+    Style="{StaticResource MaterialDesignTabRadioButtonTop}"
+    BorderBrush="{DynamicResource PrimaryHueMidBrush}"
+    Margin="4"
+    IsChecked="False"
+    Content="ДОПОЛНИТЕЛЬНЫЕ АКСЕССУАРЫ"
+    x:Name="Controllers"
+                Checked="Controllers_Checked"
+                LostFocus="Controllers_LostFocus"/>
+        </StackPanel>
     </Grid>
 </Page>

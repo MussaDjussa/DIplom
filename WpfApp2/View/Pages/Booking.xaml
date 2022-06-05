@@ -9,9 +9,9 @@
       xmlns:viewmodel="clr-namespace:WpfApp2.ViewModel"
       mc:Ignorable="d" 
       >
-    <Page.DataContext>
-        <viewmodel:ScheduleViewModel/>
-    </Page.DataContext>
+    <!--<Page.DataContext>
+        --><!--<viewmodel:ScheduleViewModel/>--><!--
+    </Page.DataContext>-->
 
 
 
@@ -122,16 +122,12 @@
 
                     <syncfusion:SfScheduler.AppointmentContextMenu>
                         <ContextMenu>
-                            <MenuItem Command="{Binding Source={x:Static Member=syncfusion:SchedulerCommands.Edit}}"
-                                      CommandParameter ="{Binding}"
-                                      CommandTarget="{Binding ElementName=Schedule}"
+                            <MenuItem 
                                       Header="Редактировать"
                                       x:Name="Edit"
                                       Click="Edit_Click">
                             </MenuItem>
                             <MenuItem
-                                Command="{Binding Source={x:Static Member=syncfusion:SchedulerCommands.Delete}}"
-                                CommandParameter ="{Binding}"
                                 Header="Удалить"
                                 x:Name="Delete"
                                 Click="Delete_Click">
@@ -194,7 +190,7 @@
             <materialDesign:DialogHost.DialogContent>
                 <StackPanel  Height="550" Width="800">
                     <materialDesign:Card>
-                        <TextBlock Text="Контекстное меню"
+                        <TextBlock Text="Контекстное меню бронирования"
                                    Margin="20"
                                    FontWeight="Medium"
                                    FontSize="20"/>
@@ -222,7 +218,7 @@
                                      x:Name="Username"
                                      Margin="10,0,0,0"/>
                             </StackPanel>
-                            <TextBlock Text="Старт"
+                            <TextBlock Text="Начало"
                                        Margin="20,0,0,0"
                                        FontSize="18"/>
 
@@ -291,19 +287,6 @@
 
                             </StackPanel>
 
-                            <CheckBox Margin="20"
-                                      FontSize="14"
-                                      Content="На весь день"
-                                      VerticalContentAlignment="Center"
-                                      VerticalAlignment="Center"
-                                      Checked="DialogEditorCheckbox_Checked"
-                                      Unchecked="DialogEditorCheckbox_Unchecked"
-                                      x:Name="DialogEditorCheckbox"
-                                      >
-                                <CheckBox.LayoutTransform>
-                                    <ScaleTransform ScaleX="1.24" ScaleY="1.25" />
-                                </CheckBox.LayoutTransform>
-                            </CheckBox>
                         </StackPanel>
                     </Grid>
 

@@ -36,7 +36,7 @@ namespace WpfApp2.View.Pages
             Schedule.MinimumDate = DateTime.Now;
             Schedule.ResourceCollection = Resources;
 
-            DataContext = App.scheduleViewModel;
+            //DataContext = App.scheduleViewModel;
         }
 
         public void OnPropertyChanged(string propName)

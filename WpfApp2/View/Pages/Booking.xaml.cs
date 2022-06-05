@@ -26,16 +26,21 @@ namespace WpfApp2.View.Pages
     /// <summary>
     /// Логика взаимодействия для Booking.xaml
     /// </summary>
-    public partial class Booking : Page
+    public partial class Booking : Page, INotifyPropertyChanged
     {
-        DispatcherTimer time = new DispatcherTimer();
+       
 
         ScheduleAppointmentCollection list = new ScheduleAppointmentCollection();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
         public Booking()
         {
             InitializeComponent();
-            time.Interval = TimeSpan.FromSeconds(5);
-            time.Tick += Time_Tick;
             Schedule.MinimumDate = DateTime.Now;
             Schedule.DisplayDate = DateTime.Now;
             Schedule.ResourceCollection = Resources;
@@ -43,13 +48,17 @@ namespace WpfApp2.View.Pages
             Schedule.AppointmentEditorOpening += Schedule_AppointmentEditorOpening;
             Schedule.CellTapped += Schedule_CellTapped;
             Schedule.AppointmentTapped += Schedule_AppointmentTapped;
-            //DatePickerEnd.DisplayDateEnd = DateTime.Now.AddDays(30);
+            Schedule.AppointmentDragStarting += Schedule_AppointmentDragStarting;
             TimePickerStart.Is24Hours = true;
             TimePickerEnd.Is24Hours = true;
-
+            Schedule.MinimumDate = DateTime.Now;
             this.Schedule.ItemsSource = list;
-
             Schedule.CellDoubleTapped += Schedule_CellDoubleTapped;
+        }
+
+        private void Schedule_AppointmentDragStarting(object sender, AppointmentDragStartingEventArgs e)
+        {
+            e.Cancel = true;
         }
 
         public int DayTimeBegin { get; set; }
@@ -76,7 +85,8 @@ namespace WpfApp2.View.Pages
 
         private void Schedule_AppointmentTapped(object sender, AppointmentTappedArgs e)
         {
-            if(e.Appointment != null)
+            Schedule.MinimumDate = App.DateTimeNow;
+            if (e.Appointment != null)
             {
                 Kakayatahyinya.Id = e.Appointment.Id;
                 StartTime = e.Appointment.StartTime;
@@ -105,6 +115,7 @@ namespace WpfApp2.View.Pages
 
         private void Schedule_CellTapped(object sender, CellTappedEventArgs e)
         {
+            Schedule.MinimumDate = App.DateTimeNow;
             CellTaped = e.DateTime;
 
             if (e.Appointments != null)
@@ -118,22 +129,25 @@ namespace WpfApp2.View.Pages
 
         private void Schedule_CellDoubleTapped(object sender, CellDoubleTappedEventArgs e)
         {
+            DialogEditorColorpicker.Color = (Color)ColorConverter.ConvertFromString("#FF8168E7");
+
+            Schedule.MinimumDate = App.DateTimeNow;
             DayTimeBegin = CellTaped.Day;
             HourTimeBegin = CellTaped.Hour;
             MonthTimeBegin = CellTaped.Month;
             MinuteTimeBegin = CellTaped.Minute;
 
+            HourTimeEnd = CellTaped.Hour+1;
+
+
             DialogEditEditButton.Visibility = Visibility.Collapsed;
 
             TimeCollapseBegin = $"{DateTime.Now.Year}.{MonthTimeBegin}.{DayTimeBegin} {HourTimeBegin}:{MinuteTimeBegin}:{0}";
 
-            TimeCollapseEnd = $"{DateTime.Now.Year}.{MonthTimeBegin}.{DayTimeBegin} {HourTimeBegin}:{MinuteTimeBegin}:{0}";
+            TimeCollapseEnd = $"{DateTime.Now.Year}.{MonthTimeBegin}.{DayTimeBegin} {HourTimeEnd}:{MinuteTimeEnd}:{0}";
 
-            DatePickerStart.IsEnabled = true;
-            DatePickerEnd.IsEnabled = true;
             DialogEditSaveButton.Visibility = Visibility.Visible;
             Username.Text = "Musa"; // username
-
             DatePickerStart.Value = CellTaped;
             DatePickerEnd.Value = CellTaped;
             TimePickerStart.SelectedTime = CellTaped;
@@ -142,18 +156,28 @@ namespace WpfApp2.View.Pages
             DialogEditor.IsOpen = true;
 
         }
-
         private void Schedule_AppointmentEditorOpening(object sender, AppointmentEditorOpeningEventArgs e)
         {
             e.Cancel = true;
         }
 
-        
+        public DateTime _minDate = DateTime.Now;
+
+        public DateTime MinTime
+        {
+            get => Schedule.MinimumDate = _minDate;
+
+            set
+            {
+                Schedule.MinimumDate = DateTime.Now;
+                OnPropertyChanged("MinTime");
+            }
+        }
         
 
         private void Time_Tick(object sender, EventArgs e)
         {
-            Schedule.MinimumDate = DateTime.Now;
+            OnPropertyChanged("MinTime");
         }
 
         private void Day_Click(object sender, RoutedEventArgs e)
@@ -175,56 +199,56 @@ namespace WpfApp2.View.Pages
         {
             DialogEditor.IsOpen = false;
         }
-
-        private void DialogEditorCheckbox_Checked(object sender, RoutedEventArgs e)
-        {
-            DatePickerStart.IsEnabled = false;
-            DatePickerEnd.IsEnabled = false;
-            TimePickerStart.IsEnabled = false;
-            TimePickerEnd.IsEnabled = false;
-        }
-
-        private void DialogEditorCheckbox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            DatePickerStart.IsEnabled = true;
-            DatePickerEnd.IsEnabled = true;
-            TimePickerStart.IsEnabled = true;
-            TimePickerEnd.IsEnabled = true;
-        }
-
         private void DialogEditSaveButton_Click(object sender, RoutedEventArgs e)
         {
             DialogEditor.IsOpen = false;
-
-            list.Add(new ScheduleAppointment()
+            ScheduleAppointment appointment = new ScheduleAppointment()
             {
-                StartTime = FullTimeInit_Start,
-                EndTime = FullTimeInit_End,
-                Subject = "Musa", // username
+                StartTime = DateTime.Parse($"{TimeCollapseBegin}"),
+                EndTime = DateTime.Parse($"{TimeCollapseEnd}"),
+                Subject = App.bookingModel.Username, // username
                 Notes = Description.Text,
                 AppointmentBackground = new SolidColorBrush(DialogEditorColorpicker.Color),
                 StartTimeZone = "Russian Standard Time",
                 EndTimeZone = "Russian Standard Time"
-            });
+            };
 
+             list.Add(appointment);
 
             Description.Text = "";
             Username.Text = "";
 
-            //var response = App.httpClient.PostAsJsonAsync("appointment", appointment).Result;
+            Appointment appointment1 = new Appointment() {
 
-            //if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            //{
-            //    MessageBox.Show("ok");
-            //}
-            //if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
-            //{
-            //    MessageBox.Show("bad request");
-            //}
+                AppointmentCode = (int)appointment.Id,
+                Background = Convert.ToString( appointment.AppointmentBackground),
+                Description = appointment.Notes,
+                  UserId = 1,
+                  StartTime = appointment.StartTime,
+                  EndTime = appointment.EndTime,
+                  Title = appointment.Subject
+
+            };
+
+
+            var response = App.httpClient.PostAsJsonAsync("appointment", appointment1).Result;
+
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                MessageBox.Show("ok");
+            }
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                MessageBox.Show("bad request");
+            }
+
+
         }
 
         private void DialogEditEditButton_Click(object sender, RoutedEventArgs e)
         {
+            Schedule.MinimumDate = App.DateTimeNow;
             foreach (var item in list.Where(q=>q.Id == Kakayatahyinya.Id))
             {
                 if(item != null)
@@ -273,29 +297,22 @@ namespace WpfApp2.View.Pages
             
         }
 
-        public string StartTimeDatePicker { get; set; }
-        public string StartTimeTimePicker { get; set; }
-        public string EndTimeTimePicker { get; set; }
-        public string EndTimeDatePicker { get; set; }
-
         public DateTime FullTimeInit_Start { get; set; }
         public DateTime FullTimeInit_End { get; set; }
 
         private void DatePickerStart_ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //var value = DatePickerStart.Value;
-            //int valueDay = DateTime.Parse(DateTime.Now.AddDays(30).ToString()).Day;
-            //int valueMonth = DateTime.Parse(DateTime.Now.AddDays(30).ToString()).Month;
-            //if (DateTime.Parse(value.ToString()).Year < DateTime.Now.Year || DateTime.Parse(value.ToString()).Year > DateTime.Now.Year
-            //    || DateTime.Parse(value.ToString()).Day < DateTime.Now.Day || DateTime.Now.Month < DateTime.Parse($"{DatePickerStart.Value}").Month
-            //    || DateTime.Parse($"{DatePickerStart.Value}").Month < DateTime.Now.Month )
-            //{
-            //    MessageBox.Show("Ошибка");
-            //    DatePickerStart.Value = CellTaped;
-            //}
-            //else
-            //{
-                StartTimeDatePicker = DatePickerStart.Value.ToString();
+            Schedule.MinimumDate = App.DateTimeNow;
+            var value = DatePickerStart.Value;
+            if (DateTime.Parse(value.ToString()).Year < DateTime.Now.Year || DateTime.Parse(value.ToString()).Year > DateTime.Now.Year
+                || DateTime.Parse(value.ToString()).Day < DateTime.Now.Day || DateTime.Now.Month > DateTime.Parse($"{DatePickerStart.Value}").Month
+                || DateTime.Parse($"{DatePickerStart.Value}").Month > DateTime.Now.AddDays(30).Month)
+            {
+                MessageBox.Show("Ошибка");
+                DatePickerStart.Value = CellTaped;
+            }
+            else
+            {
 
                 DateTime day = DatePickerStart.Value ?? DateTime.Parse(TimeCollapseBegin);
 
@@ -304,61 +321,100 @@ namespace WpfApp2.View.Pages
                 HourTimeBegin = day.Hour;
                 MinuteTimeBegin = day.Minute;
 
-                string str = $"{DateTime.Now.Year}-{MonthTimeBegin}-{DayTimeBegin} {HourTimeBegin}:{MinuteTimeBegin}:{0}";
+                TimeCollapseBegin = $"{DateTime.Now.Year}-{MonthTimeBegin}-{DayTimeBegin} {HourTimeBegin}:{MinuteTimeBegin}:{0}";
 
-                FullTimeInit_Start = DateTime.Parse(str);
-
-                DatePickerStart.Value = FullTimeInit_Start;
-;
-            //}
+                DatePickerStart.Value = DateTime.Parse(TimeCollapseBegin);
+            }
         }
 
         private void TimePickerStart_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            DateTime day = TimePickerStart.SelectedTime ?? DateTime.Parse(TimeCollapseBegin);
+            Schedule.MinimumDate = App.DateTimeNow;
+            if (TimePickerStart.SelectedTime < Schedule.MinimumDate)
+            {
+                TimePickerStart.SelectedTime = Schedule.MinimumDate.AddMinutes(10);
+            }
+            else
+            {
+                DateTime day = TimePickerStart.SelectedTime ?? DateTime.Parse(TimeCollapseBegin);
 
-            DayTimeBegin = day.Day;
-            MonthTimeBegin = day.Month;
-            HourTimeBegin = day.Hour;
-            MinuteTimeBegin = day.Minute;
+                DayTimeBegin = day.Day;
+                MonthTimeBegin = day.Month;
+                HourTimeBegin = day.Hour;
+                MinuteTimeBegin = day.Minute;
 
-            string str = $"{DateTime.Now.Year}-{MonthTimeBegin}-{DayTimeBegin} {HourTimeBegin}:{MinuteTimeBegin}:{0}";
+                TimeCollapseBegin = $"{DateTime.Now.Year}-{MonthTimeBegin}-{DayTimeBegin} {HourTimeBegin}:{MinuteTimeBegin}:{0}";
+                TimePickerStart.SelectedTime = DateTime.Parse(TimeCollapseBegin);
+            }
 
-            FullTimeInit_Start = DateTime.Parse(str);
-
-            TimePickerStart.SelectedTime = FullTimeInit_Start;
+            
         }
 
         private void DatePickerEnd_ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DateTime day = DatePickerEnd.Value ?? DateTime.Parse(TimeCollapseEnd);
+            var value = DatePickerEnd.Value;
+            if ((DateTime.Parse(value.ToString()).Year < DateTime.Now.Year || DateTime.Parse(value.ToString()).Year > DateTime.Now.Year
+                || DateTime.Parse(value.ToString()).Day < DateTime.Now.Day || DateTime.Now.Month > DateTime.Parse($"{DatePickerEnd.Value}").Month
+                || DateTime.Parse($"{DatePickerEnd.Value}").Month > DateTime.Now.AddDays(30).Month))
+            {
+                MessageBox.Show("Ошибка");
+                DatePickerEnd.Value = CellTaped;
+            }
+            else
+            {
+                Schedule.MinimumDate = App.DateTimeNow;
 
-            DayTimeEnd = day.Day;
-            MonthTimeEnd = day.Month;
-            HourTimeEnd = day.Hour;
-            MinuteTimeEnd = day.Minute;
+                DayTimeEnd = DateTime.Parse($"{DatePickerEnd.Value}").Day;
+                MonthTimeEnd = DateTime.Parse($"{DatePickerEnd.Value}").Month;
+                HourTimeEnd = DateTime.Parse($"{TimeCollapseEnd}").Hour;
+                MinuteTimeEnd = DateTime.Parse($"{TimeCollapseEnd}").Minute;
 
-            string str = $"{DateTime.Now.Year}-{MonthTimeEnd}-{DayTimeEnd} {HourTimeEnd}:{MinuteTimeEnd}:{0}";
+                TimeCollapseEnd = $"{DateTime.Now.Year}-{MonthTimeEnd}-{DayTimeEnd} {HourTimeEnd}:{MinuteTimeEnd}:{0}";
 
-            FullTimeInit_End = DateTime.Parse(str);
-
-            DatePickerEnd.Value = FullTimeInit_End;
+   
+            }
         }
 
         private void TimePickerEnd_SelectedTimeChanged(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
         {
-            DateTime day = TimePickerEnd.SelectedTime ?? DateTime.Parse(TimeCollapseEnd);
+            Schedule.MinimumDate = App.DateTimeNow;
+            //if (TimePickerEnd.SelectedTime < Schedule.MinimumDate
+            //    || TimePickerEnd.SelectedTime <= DateTime.Now
+            //   )
+            //{
+            //    TimePickerEnd.SelectedTime = CellTaped.AddHours(1);
 
-            DayTimeEnd = day.Day;
-            MonthTimeEnd = day.Month;
-            HourTimeEnd = day.Hour;
-            MinuteTimeEnd = day.Minute;
+            //    if (TimePickerStart.SelectedTime == DateTime.Parse($"{DateTime.Now.Year}-{CellTaped.Month}-{CellTaped.Day} {23}:{0}:{0}")
+            //        && TimePickerEnd.SelectedTime == DateTime.Parse($"{DateTime.Now.Year}-{CellTaped.Month}-{CellTaped.Day} {0}:{0}:{0}"))
+            //    {
+            //        TimeCollapseBegin = $"{DateTime.Now.Year}-{CellTaped.Month}-{CellTaped.Day} {23}:{0}:{0}";
+            //        TimeCollapseEnd = $"{DateTime.Now.Year}-{CellTaped.Month}-{CellTaped.Day} {23}:{59}:{59}";
 
-            string str = $"{DateTime.Now.Year}-{MonthTimeEnd}-{DayTimeEnd} {HourTimeEnd}:{MinuteTimeEnd}:{0}";
+            //        TimePickerStart.SelectedTime = DateTime.Parse(TimeCollapseBegin);
+            //        TimePickerEnd.SelectedTime = DateTime.Parse(TimeCollapseEnd);
+            //    }
+            //}
+            //else
+            //{
 
-            FullTimeInit_End = DateTime.Parse(str);
+                Schedule.MinimumDate = App.DateTimeNow;
+            //DateTime day = TimePickerEnd.SelectedTime ?? DateTime.Parse(TimeCollapseEnd);
 
-            TimePickerEnd.SelectedTime = FullTimeInit_End;
-        }
+            //DayTimeEnd = day.Day;
+            //MonthTimeEnd = day.Month;
+            //HourTimeEnd = day.Hour;
+            //MinuteTimeEnd = day.Minute;
+
+
+            DayTimeEnd = DateTime.Parse($"{TimeCollapseEnd}").Day;
+            MonthTimeEnd = DateTime.Parse($"{TimeCollapseEnd}").Month;
+            HourTimeEnd = TimePickerEnd.SelectedTime.Value.Hour;
+            MinuteTimeEnd = TimePickerEnd.SelectedTime.Value.Minute;
+
+            TimeCollapseEnd = $"{DateTime.Now.Year}-{MonthTimeEnd}-{DayTimeEnd} {HourTimeEnd}:{MinuteTimeEnd}:{0}";
+
+
+            }
+        //}
     }
 }

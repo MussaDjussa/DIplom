@@ -6,11 +6,15 @@
       xmlns:local="clr-namespace:WpfApp2.View.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="HistoryPage">
+      Title="HistoryPage"
+      xmlns:syncfusion="clr-namespace:Syncfusion.UI.Xaml.Charts;assembly=Syncfusion.SfChart.WPF"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
     <Grid>
-        <StackPanel Margin="30">
-            <StackPanel Orientation="Horizontal" Opacity="0.8">
+
+        <StackPanel>
+        <materialDesign:Card Height="100">
+            <StackPanel Orientation="Horizontal" Opacity="0.8"  Margin="18">
 
                 <Border BorderBrush="Red"
                         BorderThickness="0.5"
@@ -20,29 +24,92 @@
                            FontWeight="Bold"
                            Margin="10"/>
                 </Border>
-                
+
                 <TextBlock Text=" | "
                            FontSize="32"
                            FontWeight="Normal"
                            VerticalAlignment="Center"/>
-                <TextBlock Text="Дата регистрации: " FontSize="28"
+                <TextBlock Text="Дата регистрации: " FontSize="24"
                            FontWeight="Normal"
                            VerticalAlignment="Center"/>
                 <TextBlock Text="26.05.2022"
                            FontWeight="Normal"
-                           FontSize="28"
+                           FontSize="24"
                            VerticalAlignment="Center"
                            Foreground="#3d54fc"/>
             </StackPanel>
+        </materialDesign:Card>
 
-            <ScrollViewer Height="800">
-                <TextBlock Text="Статистика"
+            <StackPanel Margin="30">
+
+
+
+
+                <ScrollViewer Height="800">
+                    <StackPanel>
+                        <TextBlock Text="Статистика"
                        Margin="0,40,0,0"
                        FontSize="24"
                        TextDecorations="OverLine"
                        Foreground="DarkGoldenrod"/>
-            </ScrollViewer>
-           
+
+
+                        <syncfusion:SfChart Margin="0,20,0,0" 
+                                        Height="500"
+                                        HorizontalAlignment="Left"
+                                        x:Name="SfChart"
+                                        Header="Время проведенное в играх"
+                                        FontSize="18"
+                                        FontWeight="Medium">
+                            <syncfusion:SfChart.PrimaryAxis>
+                                <syncfusion:CategoryAxis>
+                                    <syncfusion:CategoryAxis.Header>
+                                        <TextBlock Text="Названия игр" FontSize="18"/>
+                                    </syncfusion:CategoryAxis.Header>
+                                </syncfusion:CategoryAxis>
+                            </syncfusion:SfChart.PrimaryAxis>
+                            <syncfusion:SfChart.SecondaryAxis>
+                                <syncfusion:NumericalAxis FontSize="14">
+                                    <syncfusion:NumericalAxis.Header>
+                                        <TextBox Text="Часы" FontSize="18" Margin="0,0,0,25"/>
+                                    </syncfusion:NumericalAxis.Header>
+                                </syncfusion:NumericalAxis>
+                            </syncfusion:SfChart.SecondaryAxis>
+
+                            <syncfusion:ColumnSeries Label="Часы"
+                                                 x:Name="ColumnSeries"
+                                                 ShowTooltip="True"
+                                                 XBindingPath="Name"
+                                                 YBindingPath="Hours"
+                                                 >
+                                <syncfusion:ColumnSeries.AdornmentsInfo>
+                                    <syncfusion:ChartAdornmentInfo ShowLabel="True"/>
+                                </syncfusion:ColumnSeries.AdornmentsInfo>
+                            </syncfusion:ColumnSeries>
+
+                            <syncfusion:SfChart.Legend>
+                                <syncfusion:ChartLegend FontSize="16"/>
+                            </syncfusion:SfChart.Legend>
+                        </syncfusion:SfChart>
+
+                        <Border BorderThickness="0.5" BorderBrush="Red"
+                            Margin="0,40"
+                            Background="#f5f5f5"
+                            CornerRadius="15">
+                            <StackPanel Margin="20" Orientation="Horizontal"
+                                HorizontalAlignment="Center">
+                                <TextBlock Text="Проведено всего времени: "
+                                   FontSize="16"
+                                   FontWeight="Medium"/>
+                                <TextBlock Text="4234"
+                                   FontSize="16"
+                                   Foreground="#3d54fc"/>
+                            </StackPanel>
+                        </Border>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Page>

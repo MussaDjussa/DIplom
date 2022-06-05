@@ -25,6 +25,7 @@ namespace WpfApp2.View.Windows
         MapPage mapPage = new MapPage();
         FeedbackPage feedbackPage = new FeedbackPage();
         HistoryPage historyPage = new HistoryPage();
+        AdditionsPage additionsPage = new AdditionsPage();
         public CatalogWindow()
         {
             InitializeComponent();
@@ -86,6 +87,7 @@ namespace WpfApp2.View.Windows
 
         private void Food_Click(object sender, RoutedEventArgs e)
         {
+            fContainer.NavigationService.Navigate(additionsPage);
             FoodIcon.Foreground = new SolidColorBrush (Colors.Red);    
         }
 

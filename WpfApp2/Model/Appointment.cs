@@ -1,14 +1,12 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Windows.Media;
 
 namespace WpfApp2.Model
 {
     public class Appointment
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int AppointmentCode { get; set; }
+
         public DateTime StartTime { get; set; }
 
         public DateTime EndTime { get; set; }
