@@ -13,7 +13,7 @@ namespace WpfApp2.Model
 
         public string Title { get; set; }
 
-        public string Description { get; set; }
+        public string Note { get; set; }
 
         public string Background { get; set; }
 

@@ -26,19 +26,18 @@ namespace WpfApp2.View.Pages
     /// <summary>
     /// Логика взаимодействия для Booking.xaml
     /// </summary>
-    public partial class Booking : Page, INotifyPropertyChanged
+    public partial class Booking : Page
     {
 
-
+        /// <summary>
+        /// update mindate in realtime
+        /// </summary>
         public static DispatcherTimer time = new DispatcherTimer();
 
+        /// <summary>
+        /// appointment list
+        /// </summary>
         ScheduleAppointmentCollection list = new ScheduleAppointmentCollection();
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string propName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
 
         public Booking()
         {
@@ -51,7 +50,6 @@ namespace WpfApp2.View.Pages
             Schedule.CellTapped += Schedule_CellTapped;
             Schedule.AppointmentTapped += Schedule_AppointmentTapped;
             Schedule.AppointmentDragStarting += Schedule_AppointmentDragStarting;
-            Schedule.AppointmentResizing += Schedule_AppointmentResizing;
 
             this.Schedule.ItemsSource = list;
             Schedule.CellDoubleTapped += Schedule_CellDoubleTapped;
@@ -64,79 +62,86 @@ namespace WpfApp2.View.Pages
             TimePickerEnd.MinTime = TimeSpan.Parse("10:00:00");
 
 
-            time.Interval = TimeSpan.FromSeconds(1);
+            time.Interval = TimeSpan.FromMilliseconds(1);
             time.Tick += Time_Tick;
             time.Start();
         }
-
+        /// <summary>
+        /// event which notificate mindate for schedule.mindate
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Time_Tick(object sender, EventArgs e)
         {
             Schedule.MinimumDate = DateTime.Now;
 
         }
 
+        /// <summary>
+        /// resize option
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Schedule_AppointmentResizing(object sender, AppointmentResizingEventArgs e)
         {
             e.CanContinueResize = false;
         }
 
+        /// <summary>
+        /// we re unable gragndrop option
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Schedule_AppointmentDragStarting(object sender, AppointmentDragStartingEventArgs e)
         {
             e.Cancel = true;
         }
 
-        public int DayTimeBegin { get; set; }
-
-        public int MonthTimeBegin { get; set; }
-
-        public int HourTimeBegin { get; set; }
-
-        public int MinuteTimeBegin { get; set; }
-
+        /// <summary>
+        /// for parsing datetime in string format
+        /// </summary>
         public string TimeCollapseBegin { get; set; }
-
-        public int DayTimeEnd { get; set; }
-
-        public int MonthTimeEnd { get; set; }
-
-        public int HourTimeEnd { get; set; }
-
-        public int MinuteTimeEnd { get; set; }
-
+        /// <summary>
+        /// for parsing datetime in string format
+        /// </summary>
         public string TimeCollapseEnd { get; set; }
+        /// <summary>
+        /// for parsing datetime in string format
+        /// </summary>
         public string TimeCollapseEnd1 { get; set; }
 
-        public ScheduleAppointment Kakayatahyinya { get; set; } = new ScheduleAppointment();
-
+        /// <summary>
+        /// temp variable for information appointment
+        /// </summary>
+        public Appointment AppointmentTapped { get; set; } = new Appointment();
+        /// <summary>
+        /// get full information about clicked appointment
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Schedule_AppointmentTapped(object sender, AppointmentTappedArgs e)
         {
             if (e.Appointment != null)
             {
-                Kakayatahyinya.Id = e.Appointment.Id;
-                StartTime = e.Appointment.StartTime;
-                EndTime = e.Appointment.EndTime;
-
-                Kakayatahyinya.Notes = e.Appointment.Notes;
-                Kakayatahyinya.Subject = e.Appointment.Subject;
-
-
-                DatePickerStart.Value = e.Appointment.StartTime;
-                DatePickerEnd.Value = e.Appointment.EndTime;
-                TimePickerEnd.Value = e.Appointment.EndTime;
-                TimePickerStart.Value = e.Appointment.StartTime;
-
-                StartTime = e.Appointment.StartTime;
-                EndTime = e.Appointment.EndTime;
+                AppointmentTapped.AppointmentCode = (int)e.Appointment.Id;
+                AppointmentTapped.StartTime = e.Appointment.StartTime;
+                AppointmentTapped.EndTime = e.Appointment.EndTime;
+                AppointmentTapped.Background = e.Appointment.AppointmentBackground.ToString();
+                AppointmentTapped.Note = e.Appointment.Notes;
+                AppointmentTapped.Title = e.Appointment.Subject;
             }
         }
 
-
+        /// <summary>
+        /// this property allows information about clicked Cell
+        /// </summary>
         public DateTime CellTaped { get; set; }
 
-        public DateTime StartTime { get; set; }
-
-        public DateTime EndTime { get; set; }
-
+        /// <summary>
+        /// celltaped Appointment
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Schedule_CellTapped(object sender, CellTappedEventArgs e)
         {
             CellTaped = e.DateTime;
@@ -147,62 +152,42 @@ namespace WpfApp2.View.Pages
             DatePickerEnd.Value = e.DateTime;
             TimePickerStart.Value = e.DateTime;
             TimePickerEnd.Value = e.DateTime.AddHours(1);
-
-            if (e.Appointments != null)
-            {
-                TempAppointment = e.Appointment;
-            }
         }
 
-        public ScheduleAppointment TempAppointment { get; set; } = new ScheduleAppointment();
-
+        /// <summary>
+        /// double click on celltapped
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Schedule_CellDoubleTapped(object sender, CellDoubleTappedEventArgs e)
         {
-            Schedule.MinimumDate = App.DateTimeNow;
-
-            DatePickerStart.Value = CellTaped;
-            TimePickerStart.Value = CellTaped;
-            DatePickerEnd.Value = CellTaped;
-            TimePickerEnd.Value = DateTime.Parse(CellTaped.ToString()).AddHours(1);
-
+            /// to open context meny
+            DialogEditor.IsOpen = true;
+            /// init color picker with default color
             DialogEditorColorpicker.Color = (Color)ColorConverter.ConvertFromString("#FF8168E7");
-
-            Schedule.MinimumDate = App.DateTimeNow;
-            DayTimeBegin = CellTaped.Day;
-            HourTimeBegin = CellTaped.Hour;
-            MonthTimeBegin = CellTaped.Month;
-            MinuteTimeBegin = CellTaped.Minute;
-
-            HourTimeEnd = CellTaped.Hour /*+ 1*/;
-
-
+            /// collaspse edit button
             DialogEditEditButton.Visibility = Visibility.Collapsed;
-
-            //TimeCollapseBegin = $"{DateTime.Now.Year}.{MonthTimeBegin}.{DayTimeBegin} {HourTimeBegin}:{MinuteTimeBegin}:{0}";
-
-            //TimeCollapseEnd = $"{DateTime.Now.Year}.{MonthTimeBegin}.{DayTimeBegin} {CellTaped.Hour + 1}:{MinuteTimeEnd}:{0}";
-
+            /// visible save button
             DialogEditSaveButton.Visibility = Visibility.Visible;
+            /// inti username 
             Username.Text = "Musa"; // username
+            /// init datepicker on celltaped
             DatePickerStart.Value = CellTaped;
-            DatePickerEnd.Value = CellTaped; 
+            /// init datepicker on celltaped
+            DatePickerEnd.Value = CellTaped;
+            /// init timepicker on celltaped
             TimePickerStart.Value = CellTaped;
+            /// init datepicker on celltaped, added default... 1 hours 
             TimePickerEnd.Value = CellTaped.AddHours(1);
 
-            DialogEditor.IsOpen = true;
-
+           
+            /// exception sutuatuion with 23 hours
             if(TimePickerStart.Value.Value.Hour == 23)
             {
                 DatePickerEnd.Value = new DateTime(TimePickerStart.Value.Value.Year, TimePickerStart.Value.Value.Month, TimePickerStart.Value.Value.Day + 1,
                   0, TimePickerStart.Value.Value.Minute, TimePickerStart.Value.Value.Second);
             }
-
-
-            if (TimePickerStart.Value == Schedule.MinimumDate || TimePickerStart.Value < Schedule.MinimumDate)
-            {
-                TimePickerStart.Value = Schedule.MinimumDate;
-            }
-
+            /// exception situation when we re create appointment on mindate
             if(CellTaped <= DateTime.Now)
             {
                 TimePickerStart.Value = DateTime.Now.AddMinutes(10);
@@ -211,42 +196,67 @@ namespace WpfApp2.View.Pages
                 
             }
         }
+        /// <summary>
+        /// we have custom context menu, this function useless
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Schedule_AppointmentEditorOpening(object sender, AppointmentEditorOpeningEventArgs e)
         {
-            
-            Schedule.MinimumDate = App.DateTimeNow;
             e.Cancel = true;
         }
 
-
+        /// <summary>
+        /// day
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Day_Click(object sender, RoutedEventArgs e)
         {
             Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.TimelineDay;
         }
-
+        /// <summary>
+        /// week
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Week_Click(object sender, RoutedEventArgs e)
         {
             Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Week;
         }
-
+        /// <summary>
+        /// month
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Month_Click(object sender, RoutedEventArgs e)
         {
             Schedule.ViewType = Syncfusion.UI.Xaml.Scheduler.SchedulerViewType.Month;
         }
-
+        /// <summary>
+        /// cancel button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DialogEditorCancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogEditor.IsOpen = false;
         }
+
+        /// <summary>
+        /// this variable contain appointment list
+        /// </summary>
         public static ScheduleAppointment appointment;
         private void DialogEditSaveButton_Click(object sender, RoutedEventArgs e)
         {
             Schedule.MinimumDate = App.DateTimeNow;
             try
             {
-                TimeCollapseBegin = $"{DateTime.Now.Year}-{DatePickerStart.Value.Value.Month}-{DatePickerStart.Value.Value.Day} {TimePickerStart.Value.Value.Hour}:{TimePickerStart.Value.Value.Minute}:0";
+                TimeCollapseBegin = $"{DateTime.Now.Year}-{DatePickerStart.Value.Value.Month}-{DatePickerStart.Value.Value.Day}" +
+                    $" {TimePickerStart.Value.Value.Hour}:{TimePickerStart.Value.Value.Minute}:0";
 
-                TimeCollapseEnd = $"{DateTime.Now.Year}-{DatePickerEnd.Value.Value.Month}-{DatePickerEnd.Value.Value.Day} {TimePickerEnd.Value.Value.Hour}:{TimePickerEnd.Value.Value.Minute}:0";
+                TimeCollapseEnd = $"{DateTime.Now.Year}-{DatePickerEnd.Value.Value.Month}-{DatePickerEnd.Value.Value.Day} " +
+                    $"{TimePickerEnd.Value.Value.Hour}:{TimePickerEnd.Value.Value.Minute}:0";
 
                 appointment = new ScheduleAppointment()
                 {
@@ -259,15 +269,13 @@ namespace WpfApp2.View.Pages
                     EndTimeZone = "Russian Standard Time"
                 };
 
-
+                /// exception situation
                 if (TimePickerStart.Value.Value.Hour == 23 && TimePickerEnd.Value.Value.Hour == 0)
                 {
                     appointment.EndTime = DateTime.Parse($"{TimeCollapseEnd1}");
                 }
 
                 DialogEditor.IsOpen = false;
-
-
 
                 list.Add(appointment);
 
@@ -279,7 +287,7 @@ namespace WpfApp2.View.Pages
 
                     AppointmentCode = (int)appointment.Id,
                     Background = Convert.ToString(appointment.AppointmentBackground),
-                    Description = appointment.Notes,
+                    Note = appointment.Notes,
                     UserId = 1,
                     StartTime = appointment.StartTime,
                     EndTime = appointment.EndTime,
@@ -287,7 +295,7 @@ namespace WpfApp2.View.Pages
 
                 };
 
-
+                ///send to web api
                 var response = App.httpClient.PostAsJsonAsync("appointment", appointment1).Result;
 
 
@@ -303,10 +311,9 @@ namespace WpfApp2.View.Pages
             }
             catch (FormatException)
             {
-                TimeCollapseEnd = $"{DateTime.Now.Year}-{DatePickerEnd.Value.Value.Month}-{DatePickerEnd.Value.Value.Day} {TimePickerEnd.Value.Value.Hour}:{TimePickerEnd.Value.Value.Minute}:0";
+                TimeCollapseEnd = $"{DateTime.Now.Year}-{DatePickerEnd.Value.Value.Month}-{DatePickerEnd.Value.Value.Day} " +
+                    $"{TimePickerEnd.Value.Value.Hour}:{TimePickerEnd.Value.Value.Minute}:0";
                
-
-
                 appointment = new ScheduleAppointment()
                 {
                     StartTime = DateTime.Parse($"{TimeCollapseBegin}"),
@@ -325,8 +332,6 @@ namespace WpfApp2.View.Pages
 
                 DialogEditor.IsOpen = false;
 
-
-
                 list.Add(appointment);
 
                 Description.Text = "";
@@ -337,7 +342,7 @@ namespace WpfApp2.View.Pages
 
                     AppointmentCode = (int)appointment.Id,
                     Background = Convert.ToString(appointment.AppointmentBackground),
-                    Description = appointment.Notes,
+                    Note = appointment.Notes,
                     UserId = 1,
                     StartTime = appointment.StartTime,
                     EndTime = appointment.EndTime,
@@ -345,38 +350,65 @@ namespace WpfApp2.View.Pages
 
                 };
 
-
+                ///send to web api
                 var response = App.httpClient.PostAsJsonAsync("appointment", appointment1).Result;
 
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    MessageBox.Show("ok");
+                    MessageBox.Show("Бронь была успешно добавлена!");
                 }
                 if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
                 {
-                    MessageBox.Show("bad request");
+                    MessageBox.Show("Ошибка!");
                 }
             }
         }
-
+        /// <summary>
+        /// edit appointment
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DialogEditEditButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var item in list.Where(q => q.Id == Kakayatahyinya.Id))
+
+            Appointment appointment = new Appointment() {
+
+                AppointmentCode = AppointmentTapped.AppointmentCode,
+                Background = DialogEditorColorpicker.Color.ToString(),
+                Note = Description.Text,
+                UserId = 1,
+                EndTime = DateTime.Parse(TimeCollapseEnd),
+                StartTime = DateTime.Parse(TimeCollapseBegin),
+                Title = Username.Text,
+            };
+
+            var update = App.httpClient.PutAsJsonAsync("appointment", appointment).Result;
+
+            if (update.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                if (item != null)
-                {
-                    item.StartTime = FullTimeInit_Start;
-                    item.EndTime = FullTimeInit_End;
-                    item.AppointmentBackground = new SolidColorBrush(DialogEditorColorpicker.Color);
-                    item.Notes = Description.Text ?? TempAppointment.Notes;
-                    item.Subject = Username.Text ?? TempAppointment.Subject;
-                    DialogEditor.IsOpen = false;
-                }
+                MessageBox.Show("Бронь была изменена!");
             }
+
+            if (update.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                MessageBox.Show("Произошла ошибка!");
+            }
+
+            DialogEditor.IsOpen = false;
+
+            var changeConditionAppoinment = list.FirstOrDefault(q=>(int)q.Id == AppointmentTapped.AppointmentCode);
+            changeConditionAppoinment.StartTime = DateTime.Parse(TimeCollapseBegin);
+            changeConditionAppoinment.EndTime = DateTime.Parse(TimeCollapseEnd);
+            changeConditionAppoinment.AppointmentBackground = new SolidColorBrush(DialogEditorColorpicker.Color);
+            changeConditionAppoinment.Notes = Description.Text;
+            changeConditionAppoinment.Subject = Username.Text;
         }
-
-
+        /// <summary>
+        /// edit context button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             DialogEditEditButton.Visibility = Visibility.Visible;
@@ -385,34 +417,57 @@ namespace WpfApp2.View.Pages
             DialogEditor.IsOpen = true;
             DialogEditSaveButton.Visibility = Visibility.Collapsed;
 
-            if (TempAppointment != null)
+            Username.Text = "";
+            Description.Text = "";
+
+            if (AppointmentTapped != null)
             {
-
                 DialogEditor.IsOpen = true;
-                Username.Text = Kakayatahyinya.Subject;
-                Description.Text = Kakayatahyinya.Notes;
+                Username.Text = AppointmentTapped.Title;
+                Description.Text = AppointmentTapped.Note;
+                DatePickerStart.Value = AppointmentTapped.StartTime;
+                TimePickerStart.Value = AppointmentTapped.StartTime;
+                DatePickerEnd.Value = AppointmentTapped.EndTime;
+                TimePickerEnd.Value = AppointmentTapped.EndTime;
             }
-
         }
-
+        /// <summary>
+        /// delete appointment
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            if (TempAppointment != null)
+            if (AppointmentTapped != null)
             {
-                foreach (var item in list.Where(q => q.Id == TempAppointment.Id))
+                foreach (var item in list.ToList().Where(q => (int)q.Id == AppointmentTapped.AppointmentCode))
                 {
                     if (item != null)
                     {
                         list.Remove(item);
+
+                        var deleteAppointment = App.httpClient.DeleteAsync($"https://localhost:5001/api/appointment/{item.Id}").Result;
+
+
+                        if (deleteAppointment.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            MessageBox.Show("Бронь была удалена!");
+                        }
+
+                        if (deleteAppointment.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                        {
+                            MessageBox.Show("Произошла ошибка!");
+                        }
                     }
                 }
             }
 
         }
-
-        public DateTime FullTimeInit_Start { get; set; }
-        public DateTime FullTimeInit_End { get; set; }
-
+        /// <summary>
+        /// datepickerstart
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
         private void DatePickerStart_ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Schedule.MinimumDate = App.DateTimeNow;
@@ -426,13 +481,6 @@ namespace WpfApp2.View.Pages
             else
             {
 
-                DateTime day = DatePickerStart.Value ?? DateTime.Parse(TimeCollapseBegin);
-
-                DayTimeBegin = day.Day;
-                MonthTimeBegin = day.Month;
-                HourTimeBegin = day.Hour;
-                MinuteTimeBegin = day.Minute;
-
                 TimeCollapseBegin = $"{DateTime.Now.Year}-{DatePickerStart.Value.Value.Month}-{DatePickerStart.Value.Value.Day} {DatePickerStart.Value.Value.Hour}:{DatePickerStart.Value.Value.Minute}:{0}";
 
                 DatePickerStart.Value = DateTime.Parse(TimeCollapseBegin);
@@ -440,25 +488,26 @@ namespace WpfApp2.View.Pages
             }
         }
 
-
+        /// <summary>
+        /// datepickerend
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
         private void DatePickerEnd_ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Schedule.MinimumDate = App.DateTimeNow;
-
-
-            //DayTimeEnd = DateTime.Parse($"{DatePickerEnd.Value}").Day;
-            //MonthTimeEnd = DateTime.Parse($"{DatePickerEnd.Value}").Month;
-            //HourTimeEnd = TimeSpan.Parse($"{DateTime.Parse($"{TimeCollapseEnd}").Hour}").Hours;
-            //MinuteTimeEnd = TimeSpan.Parse($"{DateTime.Parse($"{TimeCollapseEnd}").Minute}").Minutes;
-
-            TimeCollapseEnd = $"{DateTime.Now.Year}-{DatePickerEnd.Value.Value.Month}-{DatePickerEnd.Value.Value.Day} {DatePickerEnd.Value.Value.Hour}:{DatePickerEnd.Value.Value.Minute}:{0}";
-
-
+            TimeCollapseEnd = $"{DateTime.Now.Year}-{DatePickerEnd.Value.Value.Month}-{DatePickerEnd.Value.Value.Day} " +
+                $"{DatePickerEnd.Value.Value.Hour}:{DatePickerEnd.Value.Value.Minute}:{0}";
         }
 
-
+        /// <summary>
+        /// timepickerstart
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
         private void TimePickerStart_ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            if(TimePickerStart != null)
+                TimeCollapseBegin = TimePickerStart.Value.ToString();
           
             if (TimePickerEnd != null)
                 TimePickerEnd.MinTime = new TimeSpan(TimePickerStart.Value.Value.Hour + 1, TimePickerStart.Value.Value.Minute, TimePickerStart.Value.Value.Second);
@@ -475,25 +524,35 @@ namespace WpfApp2.View.Pages
                 TimeCollapseEnd1 = DatePickerEnd.Value.ToString();
             }
 
-            if (TimePickerStart != null)
-            {
-                HourTimeBegin = TimePickerStart.Value.Value.Hour;
-                MinuteTimeBegin = TimePickerStart.Value.Value.Minute;
-            }
-
             if (CellTaped <= DateTime.Now)
             {
                 TimePickerStart.Value = DateTime.Now;
             }
         }
-
+        /// <summary>
+        /// timepicerkend
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
         private void TimePickerEnd_ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(TimePickerEnd != null)
+            if (TimePickerEnd != null)
             {
-                HourTimeEnd = TimePickerEnd.Value.Value.Hour;
-                MinuteTimeEnd = TimePickerEnd.Value.Value.Minute;
+                TimeCollapseEnd = TimePickerEnd.Value.ToString();
             }
+        }
+        /// <summary>
+        /// colorpicker temp
+        /// </summary>
+        public string ColorPicker { get; set; }
+        /// <summary>
+        /// colorpicker
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="e"></param>
+        private void DialogEditorColorpicker_ColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ColorPicker = DialogEditorColorpicker.Color.ToString();
         }
     }
 }

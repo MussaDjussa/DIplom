@@ -79,9 +79,9 @@
 
                 <Border Background="{DynamicResource PrimaryBackgroundColor}"
                     Width="500"
-                    HorizontalAlignment="Left"
+                    HorizontalAlignment="Right"
                     CornerRadius="7"
-                    Margin="0,0,0,10">
+                    Margin="0,0,30,10">
                     <StackPanel Margin="10"
                         HorizontalAlignment="Center">
                         <TextBlock Text="Отобразить по"
@@ -246,7 +246,8 @@
                             <syncfusion:ColorPicker x:Name="DialogEditorColorpicker"
                                                     Width="300"
                                                     HorizontalAlignment="Left"
-                                                    Margin="20,0,0,0"/>
+                                                    Margin="20,0,0,0"
+                                                    ColorChanged="DialogEditorColorpicker_ColorChanged"/>
 
 
 

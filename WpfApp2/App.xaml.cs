@@ -23,17 +23,19 @@ namespace WpfApp2
 
         public static HttpClient httpClient = new HttpClient();
 
+        public static string url = string.Empty;
 
         public static DateTime DateTimeNow;
         public App()
         {
+            
             App.httpClient.BaseAddress = new Uri("https://localhost:5001/api/");
             App.httpClient.DefaultRequestHeaders.Accept.Clear();
             App.httpClient.DefaultRequestHeaders.Accept.Add(
                 new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json")
                 );
 
-
+            url = "https://localhost:5001/api/";
            
         }
 
