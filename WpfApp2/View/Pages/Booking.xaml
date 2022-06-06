@@ -228,12 +228,14 @@
                                             FontSize="16"
                                             x:Name="DatePickerStart"
                                             ValueChanged="DatePickerStart_ValueChanged"/>
-                                <materialDesign:TimePicker
-                                            Width="150"
-                                            FontSize="16"
-                                            Margin="20,0,0,0"
-                                            x:Name="TimePickerStart"
-                                            SelectedTimeChanged="TimePickerStart_SelectedTimeChanged"/>
+
+                                <syncfusion:SfTimePicker x:Name="TimePickerStart"
+                                                         Width="150"
+                                                         FontSize="16"
+                                                         Margin="20,0,0,0"
+                                                         ValueChanged="TimePickerStart_ValueChanged"
+                                                         FormatString="HH:mm:ss"/>
+
                             </StackPanel>
 
                             <TextBlock Text="Выбрать цвет:"
@@ -276,14 +278,15 @@
                                 <syncfusion:SfDatePicker Width="150"
                                             FontSize="16"
                                             x:Name="DatePickerEnd"
-                                            ValueChanged="DatePickerEnd_ValueChanged"/>
+                                            ValueChanged="DatePickerEnd_ValueChanged"
+                                            />
 
-                                <materialDesign:TimePicker
-                                            x:Name="TimePickerEnd"
-                                             Width="150"
-                                            FontSize="16"
-                                            Margin="20,0,0,0"
-                                            SelectedTimeChanged="TimePickerEnd_SelectedTimeChanged"/>
+                                <syncfusion:SfTimePicker x:Name="TimePickerEnd"
+                                                         Width="150"
+                                                         FontSize="16"
+                                                         Margin="20,0,0,0"
+                                                         ValueChanged="TimePickerEnd_ValueChanged"
+                                                         FormatString="HH:mm:ss"/>
 
                             </StackPanel>
 
