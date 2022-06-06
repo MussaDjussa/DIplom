@@ -30,6 +30,8 @@ namespace WpfApp2.View.Pages
     {
 
 
+        public static DispatcherTimer time = new DispatcherTimer();
+
         ScheduleAppointmentCollection list = new ScheduleAppointmentCollection();
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -41,7 +43,7 @@ namespace WpfApp2.View.Pages
         public Booking()
         {
             InitializeComponent();
-            Schedule.MinimumDate = DateTime.Now;
+  
             Schedule.DisplayDate = DateTime.Now;
             Schedule.ResourceCollection = Resources;
             Schedule.MaximumDate = DateTime.Now.AddDays(30);
@@ -49,9 +51,8 @@ namespace WpfApp2.View.Pages
             Schedule.CellTapped += Schedule_CellTapped;
             Schedule.AppointmentTapped += Schedule_AppointmentTapped;
             Schedule.AppointmentDragStarting += Schedule_AppointmentDragStarting;
-            //TimePickerStart.Is24Hours = true;
-            //TimePickerEnd.Is24Hours = true;
-            Schedule.MinimumDate = DateTime.Now;
+            Schedule.AppointmentResizing += Schedule_AppointmentResizing;
+
             this.Schedule.ItemsSource = list;
             Schedule.CellDoubleTapped += Schedule_CellDoubleTapped;
 
@@ -61,8 +62,24 @@ namespace WpfApp2.View.Pages
             TimePickerEnd.Value = DateTime.Now;
 
             TimePickerEnd.MinTime = TimeSpan.Parse("10:00:00");
+
+
+            time.Interval = TimeSpan.FromSeconds(1);
+            time.Tick += Time_Tick;
+            time.Start();
         }
-        public DateTime DateTimePicker { get; set; }
+
+        private void Time_Tick(object sender, EventArgs e)
+        {
+            Schedule.MinimumDate = DateTime.Now;
+
+        }
+
+        private void Schedule_AppointmentResizing(object sender, AppointmentResizingEventArgs e)
+        {
+            e.CanContinueResize = false;
+        }
+
         private void Schedule_AppointmentDragStarting(object sender, AppointmentDragStartingEventArgs e)
         {
             e.Cancel = true;
@@ -93,7 +110,6 @@ namespace WpfApp2.View.Pages
 
         private void Schedule_AppointmentTapped(object sender, AppointmentTappedArgs e)
         {
-            Schedule.MinimumDate = App.DateTimeNow;
             if (e.Appointment != null)
             {
                 Kakayatahyinya.Id = e.Appointment.Id;
@@ -123,7 +139,6 @@ namespace WpfApp2.View.Pages
 
         private void Schedule_CellTapped(object sender, CellTappedEventArgs e)
         {
-            Schedule.MinimumDate = App.DateTimeNow;
             CellTaped = e.DateTime;
             TimeCollapseBegin = $"{DateTime.Now.Year}.{e.DateTime.Month}.{e.DateTime.Day} {e.DateTime.Hour}:{e.DateTime.Minute}:{0}";
             TimeCollapseEnd = $"{DateTime.Now.Year}.{e.DateTime.Month}.{e.DateTime.Day} {e.DateTime.Hour+1}:{e.DateTime.Minute}:{0}";
@@ -138,7 +153,6 @@ namespace WpfApp2.View.Pages
                 TempAppointment = e.Appointment;
             }
         }
-
 
         public ScheduleAppointment TempAppointment { get; set; } = new ScheduleAppointment();
 
@@ -171,7 +185,7 @@ namespace WpfApp2.View.Pages
             DialogEditSaveButton.Visibility = Visibility.Visible;
             Username.Text = "Musa"; // username
             DatePickerStart.Value = CellTaped;
-            DatePickerEnd.Value = CellTaped;
+            DatePickerEnd.Value = CellTaped; 
             TimePickerStart.Value = CellTaped;
             TimePickerEnd.Value = CellTaped.AddHours(1);
 
@@ -183,6 +197,19 @@ namespace WpfApp2.View.Pages
                   0, TimePickerStart.Value.Value.Minute, TimePickerStart.Value.Value.Second);
             }
 
+
+            if (TimePickerStart.Value == Schedule.MinimumDate || TimePickerStart.Value < Schedule.MinimumDate)
+            {
+                TimePickerStart.Value = Schedule.MinimumDate;
+            }
+
+            if(CellTaped <= DateTime.Now)
+            {
+                TimePickerStart.Value = DateTime.Now.AddMinutes(10);
+                TimePickerStart.MinTime = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                TimePickerEnd.Value = CellTaped.AddHours(1);
+                
+            }
         }
         private void Schedule_AppointmentEditorOpening(object sender, AppointmentEditorOpeningEventArgs e)
         {
@@ -335,7 +362,6 @@ namespace WpfApp2.View.Pages
 
         private void DialogEditEditButton_Click(object sender, RoutedEventArgs e)
         {
-            Schedule.MinimumDate = App.DateTimeNow;
             foreach (var item in list.Where(q => q.Id == Kakayatahyinya.Id))
             {
                 if (item != null)
@@ -353,7 +379,6 @@ namespace WpfApp2.View.Pages
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            Schedule.MinimumDate = App.DateTimeNow;
             DialogEditEditButton.Visibility = Visibility.Visible;
             DatePickerStart.IsEnabled = false;
             DatePickerEnd.IsEnabled = false;
@@ -372,7 +397,6 @@ namespace WpfApp2.View.Pages
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            Schedule.MinimumDate = App.DateTimeNow;
             if (TempAppointment != null)
             {
                 foreach (var item in list.Where(q => q.Id == TempAppointment.Id))
@@ -435,7 +459,6 @@ namespace WpfApp2.View.Pages
 
         private void TimePickerStart_ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Schedule.MinimumDate = App.DateTimeNow;
           
             if (TimePickerEnd != null)
                 TimePickerEnd.MinTime = new TimeSpan(TimePickerStart.Value.Value.Hour + 1, TimePickerStart.Value.Value.Minute, TimePickerStart.Value.Value.Second);
@@ -457,7 +480,11 @@ namespace WpfApp2.View.Pages
                 HourTimeBegin = TimePickerStart.Value.Value.Hour;
                 MinuteTimeBegin = TimePickerStart.Value.Value.Minute;
             }
-                
+
+            if (CellTaped <= DateTime.Now)
+            {
+                TimePickerStart.Value = DateTime.Now;
+            }
         }
 
         private void TimePickerEnd_ValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -467,8 +494,6 @@ namespace WpfApp2.View.Pages
                 HourTimeEnd = TimePickerEnd.Value.Value.Hour;
                 MinuteTimeEnd = TimePickerEnd.Value.Value.Minute;
             }
-            Schedule.MinimumDate = App.DateTimeNow;
-          
         }
     }
 }

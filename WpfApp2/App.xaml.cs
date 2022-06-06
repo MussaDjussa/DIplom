@@ -23,7 +23,6 @@ namespace WpfApp2
 
         public static HttpClient httpClient = new HttpClient();
 
-        public static DispatcherTimer time = new DispatcherTimer();
 
         public static DateTime DateTimeNow;
         public App()
@@ -35,15 +34,10 @@ namespace WpfApp2
                 );
 
 
-            time.Interval = TimeSpan.FromSeconds(1);
-            time.Tick += Time_Tick;
-            time.Start();
+           
         }
 
-        private void Time_Tick(object sender, EventArgs e)
-        {
-            DateTimeNow = DateTime.Now;
-        }
+        
 
         public static User users = new User();
     }
